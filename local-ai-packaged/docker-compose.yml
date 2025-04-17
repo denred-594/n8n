@@ -161,9 +161,10 @@ services:
       resources:
         limits:
           cpus: "6.0"  # 6 von 8 Kernen
-          memory: 12g  # 12 GB RAM
+          memory: 14g  # 14 GB RAM für parallele Anfragen
+    cpu_shares: 2048  # Höhere Priorität bei CPU-Konkurrenz
     environment:
-      - OLLAMA_NUM_THREADS=6  # Setzt 6 Threads für Ollama
+      - OLLAMA_NUM_THREADS=6  # 6 Threads für maximale CPU-Nutzung
 
   ollama-pull-llama-cpu-optimized:
     <<: *init-ollama

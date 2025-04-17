@@ -34,6 +34,7 @@ x-ollama: &service-ollama
     interval: 10s
     timeout: 5s
     retries: 5
+    start_period: 30s
 
 x-init-ollama: &init-ollama
   image: ollama/ollama:latest
@@ -125,7 +126,6 @@ services:
     volumes:
       - qdrant_storage:/qdrant/storage
 
-  # Ollama CPU-optimiert Service
   ollama-cpu-optimized:
     <<: *service-ollama
     container_name: ollama-cpu-optimized
@@ -134,7 +134,6 @@ services:
     volumes:
       - ollama_storage:/root/.ollama
 
-  # Ollama CPU-optimiert Modell-Download-Service
   ollama-pull-llama-cpu-optimized:
     <<: *init-ollama
     container_name: ollama-pull-llama-cpu-optimized
@@ -145,6 +144,7 @@ services:
       - |
         sleep 3
         OLLAMA_HOST=ollama-cpu-optimized:11434 ollama pull llama3:8b-q4_0
+        OLLAMA_HOST=ollama-cpu-optimized:11434 ollama pull nomic-embed-text
     depends_on:
       ollama-cpu-optimized:
         condition: service_healthy

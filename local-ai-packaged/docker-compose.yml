@@ -55,9 +55,6 @@ services:
         limits:
           cpus: "1.0"
           memory: 1g
-        reservations:
-          cpus: "0.5"
-          memory: 512m
 
   open-webui:
     image: ghcr.io/open-webui/open-webui:main
@@ -75,9 +72,6 @@ services:
         limits:
           cpus: "1.0"
           memory: 1g
-        reservations:
-          cpus: "0.5"
-          memory: 512m
 
   postgres:
     image: postgres:16-alpine
@@ -101,9 +95,6 @@ services:
         limits:
           cpus: "0.5"
           memory: 512m
-        reservations:
-          cpus: "0.25"
-          memory: 256m
 
   n8n-import:
     <<: *service-n8n
@@ -122,9 +113,6 @@ services:
         limits:
           cpus: "1.0"
           memory: 1g
-        reservations:
-          cpus: "0.5"
-          memory: 512m
 
   n8n:
     <<: *service-n8n
@@ -146,9 +134,6 @@ services:
         limits:
           cpus: "2.0"
           memory: 2g
-        reservations:
-          cpus: "1.0"
-          memory: 1g
 
   qdrant:
     image: qdrant/qdrant
@@ -164,9 +149,6 @@ services:
         limits:
           cpus: "1.0"
           memory: 1g
-        reservations:
-          cpus: "0.5"
-          memory: 512m
 
   ollama-cpu-optimized:
     <<: *service-ollama
@@ -180,9 +162,8 @@ services:
         limits:
           cpus: "6.0"  # 6 von 8 Kernen
           memory: 12g  # 12 GB RAM
-        reservations:
-          cpus: "4.0"  # Mindestens 4 Kerne
-          memory: 8g   # Mindestens 8 GB RAM
+    environment:
+      - OLLAMA_NUM_THREADS=6  # Setzt 6 Threads für Ollama
 
   ollama-pull-llama-cpu-optimized:
     <<: *init-ollama
@@ -202,6 +183,3 @@ services:
         limits:
           cpus: "1.0"
           memory: 512m
-        reservations:
-          cpus: "0.5"
-          memory: 256m

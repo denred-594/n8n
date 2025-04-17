@@ -127,6 +127,14 @@ services:
       - 11434:11434
     volumes:
       - ollama_storage:/root/.ollama
+    deploy:
+      resources:
+        limits:
+          cpus: "8.0"  # 8 CPU-Kerne
+          memory: 12g  # 12 GB RAM
+        reservations:
+          cpus: "4.0"  # Mindestens 4 Kerne reserviert
+          memory: 8g   # Mindestens 8 GB RAM reserviert
 
   ollama-pull-llama-cpu-optimized:
     <<: *init-ollama
@@ -136,8 +144,8 @@ services:
     command:
       - "-c"
       - |
-        sleep 10
-        OLLAMA_HOST=ollama-cpu-optimized:11434 ollama pull llama3.1:8b-q4_0
+        sleep 15
+        OLLAMA_HOST=ollama-cpu-optimized:11434 ollama pull llama3.1:8b
         OLLAMA_HOST=ollama-cpu-optimized:11434 ollama pull nomic-embed-text
     depends_on:
       - ollama-cpu-optimized

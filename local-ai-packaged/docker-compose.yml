@@ -1,8 +1,7 @@
 volumes:
   n8n_storage:
   postgres_storage:
-  ollama_standard_storage:
-  ollama_cpu_optimized_storage:
+  ollama_storage:
   qdrant_storage:
   open-webui:
   flowise:
@@ -29,17 +28,17 @@ x-n8n: &service-n8n
 x-ollama: &service-ollama
   image: ollama/ollama:latest
   networks: ['demo']
-  restart: unless-stopped
+  restart: always
+  healthcheck:
+    test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+    interval: 10s
+    timeout: 5s
+    retries: 5
 
 x-init-ollama: &init-ollama
   image: ollama/ollama:latest
   networks: ['demo']
   entrypoint: /bin/sh
-  command:
-    - "-c"
-    - |
-      sleep 3
-      # Wird in den spezifischen Services überschrieben
 
 services:
   flowise:
@@ -126,49 +125,26 @@ services:
     volumes:
       - qdrant_storage:/qdrant/storage
 
-  # Ollama Standard Service (CPU)
-  ollama-standard:
-    <<: *service-ollama
-    container_name: ollama-standard
-    ports:
-      - 11434:11434
-    volumes:
-      - ollama_standard_storage:/root/.ollama
-
   # Ollama CPU-optimiert Service
   ollama-cpu-optimized:
     <<: *service-ollama
     container_name: ollama-cpu-optimized
     ports:
-      - 11435:11435
+      - 11434:11434
     volumes:
-      - ollama_cpu_optimized_storage:/root/.ollama
-
-  # Ollama Standard Modell-Download-Service
-  ollama-pull-llama-standard:
-    <<: *init-ollama
-    container_name: ollama-pull-llama-standard
-    volumes:
-      - ollama_standard_storage:/root/.ollama
-    command:
-      - "-c"
-      - |
-        sleep 3
-        OLLAMA_HOST=ollama-standard:11434 ollama pull llama2:7b
-        OLLAMA_HOST=ollama-standard:11434 ollama pull nomic-embed-text
-    depends_on:
-      - ollama-standard
+      - ollama_storage:/root/.ollama
 
   # Ollama CPU-optimiert Modell-Download-Service
   ollama-pull-llama-cpu-optimized:
     <<: *init-ollama
     container_name: ollama-pull-llama-cpu-optimized
     volumes:
-      - ollama_cpu_optimized_storage:/root/.ollama
+      - ollama_storage:/root/.ollama
     command:
       - "-c"
       - |
         sleep 3
-        OLLAMA_HOST=ollama-cpu-optimized:11435 ollama pull llama3:8b-q4_0
+        OLLAMA_HOST=ollama-cpu-optimized:11434 ollama pull llama3:8b-q4_0
     depends_on:
-      - ollama-cpu-optimized
+      ollama-cpu-optimized:
+        condition: service_healthy

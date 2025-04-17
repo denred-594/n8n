@@ -50,6 +50,14 @@ services:
     volumes:
       - ~/.flowise:/root/.flowise
     entrypoint: /bin/sh -c "sleep 3; flowise start"
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 1g
+        reservations:
+          cpus: "0.5"
+          memory: 512m
 
   open-webui:
     image: ghcr.io/open-webui/open-webui:main
@@ -62,6 +70,14 @@ services:
       - "host.docker.internal:host-gateway"
     volumes:
       - open-webui:/app/backend/data
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 1g
+        reservations:
+          cpus: "0.5"
+          memory: 512m
 
   postgres:
     image: postgres:16-alpine
@@ -80,6 +96,14 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512m
+        reservations:
+          cpus: "0.25"
+          memory: 256m
 
   n8n-import:
     <<: *service-n8n
@@ -93,6 +117,14 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 1g
+        reservations:
+          cpus: "0.5"
+          memory: 512m
 
   n8n:
     <<: *service-n8n
@@ -109,6 +141,14 @@ services:
         condition: service_healthy
       n8n-import:
         condition: service_completed_successfully
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2g
+        reservations:
+          cpus: "1.0"
+          memory: 1g
 
   qdrant:
     image: qdrant/qdrant
@@ -119,6 +159,14 @@ services:
       - 6333:6333
     volumes:
       - qdrant_storage:/qdrant/storage
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 1g
+        reservations:
+          cpus: "0.5"
+          memory: 512m
 
   ollama-cpu-optimized:
     <<: *service-ollama
@@ -130,11 +178,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "8.0"  # 8 CPU-Kerne
+          cpus: "6.0"  # 6 von 8 Kernen
           memory: 12g  # 12 GB RAM
         reservations:
-          cpus: "4.0"  # Mindestens 4 Kerne reserviert
-          memory: 8g   # Mindestens 8 GB RAM reserviert
+          cpus: "4.0"  # Mindestens 4 Kerne
+          memory: 8g   # Mindestens 8 GB RAM
 
   ollama-pull-llama-cpu-optimized:
     <<: *init-ollama
@@ -149,3 +197,11 @@ services:
         OLLAMA_HOST=ollama-cpu-optimized:11434 ollama pull nomic-embed-text
     depends_on:
       - ollama-cpu-optimized
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512m
+        reservations:
+          cpus: "0.5"
+          memory: 256m

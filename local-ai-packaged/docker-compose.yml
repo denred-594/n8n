@@ -175,7 +175,7 @@ services:
       - "-c"
       - |
         sleep 15
-        OLLAMA_HOST=ollama-cpu-optimized:11434 ollama pull llama3.1:8b
+        OLLAMA_HOST=ollama-cpu-optimized:11434 ollama pull phi4-mini
         OLLAMA_HOST=ollama-cpu-optimized:11434 ollama pull nomic-embed-text
     depends_on:
       - ollama-cpu-optimized

@@ -1,7 +1,7 @@
+version: '3.8'
 volumes:
   n8n_storage:
   postgres_storage:
-  ollama_storage:
   qdrant_storage:
   open-webui:
   flowise:
@@ -24,16 +24,6 @@ x-n8n: &service-n8n
     - N8N_SECURE_COOKIE=false
   links:
     - postgres
-
-x-ollama: &service-ollama
-  image: ollama/ollama:latest
-  networks: ['demo']
-  restart: always
-
-x-init-ollama: &init-ollama
-  image: ollama/ollama:latest
-  networks: ['demo']
-  entrypoint: /bin/sh
 
 services:
   flowise:
@@ -149,38 +139,3 @@ services:
         limits:
           cpus: "1.0"
           memory: 1g
-
-  ollama-cpu-optimized:
-    <<: *service-ollama
-    container_name: ollama-cpu-optimized
-    ports:
-      - 11434:11434
-    volumes:
-      - ollama_storage:/root/.ollama
-    deploy:
-      resources:
-        limits:
-          cpus: "6.0"  # 6 von 8 Kernen
-          memory: 14g  # 14 GB RAM für parallele Anfragen
-    cpu_shares: 2048  # Höhere Priorität bei CPU-Konkurrenz
-    environment:
-      - OLLAMA_NUM_THREADS=6  # 6 Threads für maximale CPU-Nutzung
-
-  ollama-pull-llama-cpu-optimized:
-    <<: *init-ollama
-    container_name: ollama-pull-llama-cpu-optimized
-    volumes:
-      - ollama_storage:/root/.ollama
-    command:
-      - "-c"
-      - |
-        sleep 15
-        OLLAMA_HOST=ollama-cpu-optimized:11434 ollama pull phi4-mini
-        OLLAMA_HOST=ollama-cpu-optimized:11434 ollama pull nomic-embed-text
-    depends_on:
-      - ollama-cpu-optimized
-    deploy:
-      resources:
-        limits:
-          cpus: "1.0"
-          memory: 512m

@@ -1,0 +1,2191 @@
+{
+  "name": "Prototyp Stalgast",
+  "nodes": [
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {
+          "temperature": 0.3
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1860,
+        220
+      ],
+      "id": "64271921-4a84-4c8b-8fbd-5298ef98f81d",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "c7rOayprscHnt5na",
+          "name": "OpenAi account Main (Denny)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Set-message-and-id').item.json.chatInput }}",
+        "options": {
+          "systemMessage": "Du bist ein freundlicher Assistent beim Reklamieren von Produkten bei Stahlgast. Deine einzige Aufgabe ist es herauszufinden was die ID des Produktes ist, dass der Kunde reklamieren möchte. Stelle ihm dazu Fragen, und stelle sicher dass er nur die ID eingibt immer aus \"PP\" und 7 Ziffern besteht. Zum Beispiel PP4007300\n\nWenn du die ID vom Nutzer hast, gebe sie aus. Aber nur ganz genau die ID! Keine weiteren Worte oder Zeichen!!!!"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        2000,
+        0
+      ],
+      "id": "6c90bd5e-bd7a-4531-b3a5-2c3f645c4e98",
+      "name": "Product-finder"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "products",
+          "mode": "list",
+          "cachedResultName": "products"
+        },
+        "where": {
+          "values": [
+            {
+              "column": "id",
+              "value": "={{ $('Product-finder').item.json.output }}"
+            }
+          ]
+        },
+        "options": {
+          "outputColumns": [
+            "product",
+            "imgurl",
+            "guarantee"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        3160,
+        -120
+      ],
+      "id": "7a09cf3a-138a-4659-8d24-3cb4f2af8f2b",
+      "name": "Get-details",
+      "credentials": {
+        "postgres": {
+          "id": "5qCQ74zJJo2uabWQ",
+          "name": "Stalgast_owner"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "355d491c-b374-44a3-aada-eb826f44b7a7",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -380,
+        40
+      ],
+      "id": "56a02756-b1a1-42ae-9fd4-723ec6a55080",
+      "name": "Webhook",
+      "webhookId": "355d491c-b374-44a3-aada-eb826f44b7a7"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $('Product-finder').item.json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        3160,
+        160
+      ],
+      "id": "b8d4327e-80bd-40ea-950e-eb7dfc622749",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $('Set-response').first().json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        3840,
+        -120
+      ],
+      "id": "6eef110d-45c2-4452-9b01-13a548c0ce14",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "content": "## Create Data Base\n",
+        "height": 240,
+        "width": 740
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        60,
+        -600
+      ],
+      "typeVersion": 1,
+      "id": "d9631c06-bece-4861-b7c3-d61a5617091c",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Fill Data Base",
+        "height": 240,
+        "width": 440,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        800,
+        -600
+      ],
+      "typeVersion": 1,
+      "id": "114de5ca-c86e-44ad-af49-82dc3427a160",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -460,
+        -540
+      ],
+      "id": "515146a8-6fbe-43f2-91c1-d399317414a2",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "content": "## Delete Data Base",
+        "height": 240,
+        "width": 560,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -500,
+        -600
+      ],
+      "typeVersion": 1,
+      "id": "a22673fc-87e1-4515-8cc0-6e493545c774",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "DROP TABLE IF EXISTS n8n_chat_histories",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -100,
+        -540
+      ],
+      "id": "1edff5e8-dc5f-4a9e-b23f-947a7a9bd69f",
+      "name": "Delete Memory",
+      "alwaysOutputData": false,
+      "credentials": {
+        "postgres": {
+          "id": "5qCQ74zJJo2uabWQ",
+          "name": "Stalgast_owner"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO products (id, product, imgUrl, guarantee, reasonForRefund) VALUES\n('PP0602636', 'GGF Pizzaofen mit zwei Kammern für 12 Pizzen à 360 mm, Vollschamott, 18 kW, 1010 x 1210 x 750mm (BxTxH)', 'https://www.stalgast.de/media/catalog/product/cache/0d7a7ca7829693724ecb20dce2f7f2e8/6/9/69b92a98_ba16_428e_89b0_dc4cc867bffe781812_Linea_FR_72_66_6203.jpg', '2', 'Defekter Heizkörper nach 6 Monaten'),\n('PP1130300', 'Spiral-Teigknetmaschine Dough-Master, automatische Steuerung, 45 Liter, 2,6 kW', 'https://www.stalgast.de/media/catalog/product/cache/0d7a7ca7829693724ecb20dce2f7f2e8/M/a/Main_product_photo_T6f6E2WEQ0JM_09f9.jpg', '3', 'Lautes Geräusch bei Betrieb, Lager verschlissen'),\n('PP4007300', 'Pizzaschaufel aus Buchenholz, 350 x 300 x 1100 mm (BxTxH)', 'https://www.stalgast.de/media/catalog/product/cache/0d7a7ca7829693724ecb20dce2f7f2e8/M/a/Main_product_photo_f3mRTh7I4pfF_17af.jpg', '1', 'Holz splittert nach mehrmaliger Nutzung');",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        860,
+        -540
+      ],
+      "id": "2ee300eb-3fad-43c2-a586-4e6feee75ad0",
+      "name": "Insert Table Products",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "5qCQ74zJJo2uabWQ",
+          "name": "Stalgast_owner"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- Tabelle erstellen\nCREATE TABLE products (\n    id VARCHAR(50) PRIMARY KEY,\n    product VARCHAR(200),\n    imgUrl VARCHAR(300),\n    guarantee TEXT,\n    reasonForRefund TEXT\n);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        140,
+        -540
+      ],
+      "id": "13a01717-f77f-4ea2-b09c-ca1c6ba5b5e6",
+      "name": "Create Table Products",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "5qCQ74zJJo2uabWQ",
+          "name": "Stalgast_owner"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "DROP TABLE IF EXISTS products;\nDROP TABLE IF EXISTS customer;\nDROP TABLE IF EXISTS orders;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -280,
+        -540
+      ],
+      "id": "ed96f0a8-d4c3-49a5-b708-137a1a0df844",
+      "name": "Delete Table Products",
+      "alwaysOutputData": false,
+      "credentials": {
+        "postgres": {
+          "id": "5qCQ74zJJo2uabWQ",
+          "name": "Stalgast_owner"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "customer",
+          "mode": "list",
+          "cachedResultName": "customer"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Set-message-and-id').item.json.sessionId }}",
+            "product": "={{ $('Product-finder').item.json.output }}",
+            "numberofproducts": "1",
+            "step": 1
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "step",
+              "displayName": "step",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "product",
+              "displayName": "product",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "numberofproducts",
+              "displayName": "numberofproducts",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "reasonforrefund",
+              "displayName": "reasonforrefund",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "customernumber",
+              "displayName": "customernumber",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        3380,
+        -120
+      ],
+      "id": "5508b8b6-7dec-458e-b856-4dfca0426880",
+      "name": "Save-user-data",
+      "credentials": {
+        "postgres": {
+          "id": "5qCQ74zJJo2uabWQ",
+          "name": "Stalgast_owner"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "customer",
+          "mode": "list",
+          "cachedResultName": "customer"
+        },
+        "where": {
+          "values": [
+            {
+              "column": "id",
+              "value": "={{ $('Set-message-and-id').item.json.sessionId }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        260,
+        40
+      ],
+      "id": "79b7bde4-d4a9-4359-ad3e-7e0ba3105f62",
+      "name": "Get-user-data",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "5qCQ74zJJo2uabWQ",
+          "name": "Stalgast_owner"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "CREATE TABLE customer (\n    id TEXT PRIMARY KEY,\n    step INT,\n    product TEXT,\n    numberOfProducts TEXT,\n    reasonForRefund TEXT,\n    customerNumber TEXT\n);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        360,
+        -540
+      ],
+      "id": "7b87979e-8118-42b0-adf7-41842906034f",
+      "name": "Create Table Nutzer",
+      "credentials": {
+        "postgres": {
+          "id": "5qCQ74zJJo2uabWQ",
+          "name": "Stalgast_owner"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $('Product-finder').item.json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        2900,
+        1180
+      ],
+      "id": "bed54ba2-4d3d-4d54-b7de-497fa2fa9195",
+      "name": "Respond to Webhook2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Set-message-and-id').item.json.chatInput }}",
+        "options": {
+          "systemMessage": "Du bist ein freundlicher Assistent zum Reklamieren von Produkten bei Stahlgast. Deine Einzige Aufgabe ist es die Kundennummer des Nutzers herauszufinden. Stelle ihm dazu Fragen. \n\ndie Kundennummer hat immer genau 4 Ziffern also zum Beispiel: 4567\n\nWenn du die Nummer des Kunden bereits hast dann gege genau diese und nichts mehr, nur diese 4 Ziffern und kein zeihen oder text mehr"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        2020,
+        1060
+      ],
+      "id": "04505fef-f201-4558-a19f-dea4cc88211b",
+      "name": "Kundennummer-finder"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1840,
+        1280
+      ],
+      "id": "c55d6b6a-2127-4201-93f7-e4db1a212bf7",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "c7rOayprscHnt5na",
+          "name": "OpenAi account Main (Denny)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "Alles klar, Ihr Produkt hat noch eine Garantie. Warum möchten Sie das Produkt stornieren?",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        3980,
+        880
+      ],
+      "id": "98d90042-b815-48e5-bc7e-80d5ba6ae1b1",
+      "name": "Respond to Webhook3"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "CREATE TABLE orders (\n    orderId SERIAL PRIMARY KEY,\n    userId TEXT,\n    productId TEXT,\n    orderDate TEXT\n);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        580,
+        -540
+      ],
+      "id": "b08d2b90-1593-4e19-8a33-74089c6bcfd4",
+      "name": "Create Table orders",
+      "credentials": {
+        "postgres": {
+          "id": "5qCQ74zJJo2uabWQ",
+          "name": "Stalgast_owner"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- Daten einfügen\nINSERT INTO orders (userId, productId, orderDate) VALUES\n('4444', 'PP0602636', '2025-02-20'),\n('4444', 'PP1130300', '2020-04-04'),\n('4444', 'PP4007300', '2024-05-05');",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        1080,
+        -540
+      ],
+      "id": "6365b444-69a5-400b-9448-0002bb9efbd5",
+      "name": "Insert Tabel orders",
+      "credentials": {
+        "postgres": {
+          "id": "5qCQ74zJJo2uabWQ",
+          "name": "Stalgast_owner"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "orders",
+          "mode": "list",
+          "cachedResultName": "orders"
+        },
+        "where": {
+          "values": [
+            {
+              "column": "userid",
+              "value": "={{ $('Kundennummer-finder').item.json.output }}"
+            },
+            {
+              "column": "productid",
+              "value": "={{ $('Get-product-of-user').first().json.product }}"
+            }
+          ]
+        },
+        "options": {
+          "outputColumns": [
+            "orderdate"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        3540,
+        980
+      ],
+      "id": "f4a80b9e-8e73-45ee-92c1-e34dfe329dc4",
+      "name": "Get-orders-of-user",
+      "credentials": {
+        "postgres": {
+          "id": "5qCQ74zJJo2uabWQ",
+          "name": "Stalgast_owner"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "customer",
+          "mode": "list",
+          "cachedResultName": "customer"
+        },
+        "where": {
+          "values": [
+            {
+              "column": "id",
+              "value": "={{ $('Set-message-and-id').item.json.sessionId }}"
+            }
+          ]
+        },
+        "options": {
+          "outputColumns": [
+            "product"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        3120,
+        980
+      ],
+      "id": "a1851132-69bd-4658-8510-df7e16c24d98",
+      "name": "Get-product-of-user",
+      "credentials": {
+        "postgres": {
+          "id": "5qCQ74zJJo2uabWQ",
+          "name": "Stalgast_owner"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "products",
+          "mode": "list",
+          "cachedResultName": "products"
+        },
+        "where": {
+          "values": [
+            {
+              "column": "id",
+              "value": "={{ $('Get-product-of-user').first().json.product }}"
+            }
+          ]
+        },
+        "options": {
+          "outputColumns": [
+            "guarantee"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        3340,
+        980
+      ],
+      "id": "23880164-1d00-4f79-b1fa-4dd83d979923",
+      "name": "Get-product-data",
+      "credentials": {
+        "postgres": {
+          "id": "5qCQ74zJJo2uabWQ",
+          "name": "Stalgast_owner"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c1f2d0c6-51d5-4588-af40-38f55ab6a7e7",
+              "leftValue": "={{ \n  (() => {\n    const orderDateStr = $('Get-orders-of-user').first().json.orderdate;\n    const warrantyYears = Number($('Get-product-data').item.json.guarantee);\n    const compareDate = new Date('2025-03-25');\n    const orderDate = new Date(orderDateStr);\n    const warrantyEndDate = new Date(orderDate.setFullYear(orderDate.getFullYear() + warrantyYears));\n    return warrantyEndDate > compareDate;\n  })()\n}}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3760,
+        980
+      ],
+      "id": "c2dfce2a-dd50-44ea-abaa-c918562f3219",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "=Es tut mir leid! Ihre Garantie ist bereits abgelaufen. Sie haben das Produkt am  {{ $('Get-orders-of-user').item.json.order_date }} bestellt und es hatte nur eine Garantie für {{ $('Get-product-data').item.json.garantie }} Jahre. ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        3980,
+        1080
+      ],
+      "id": "5c902e96-626e-4f84-9986-3e2b3022a082",
+      "name": "Respond to Webhook4"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1760,
+        1820
+      ],
+      "id": "0b834062-5f4a-4202-908f-59d4e6d62663",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "c7rOayprscHnt5na",
+          "name": "OpenAi account Main (Denny)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Hier erhällst du einen gerechtfertigten Grund für die Reklamation des Produktes.",
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "products",
+          "mode": "list",
+          "cachedResultName": "products"
+        },
+        "where": {
+          "values": [
+            {
+              "column": "id",
+              "value": "={{ $('Get-user-data').item.json.product }}"
+            }
+          ]
+        },
+        "options": {
+          "outputColumns": [
+            "reasonforrefund"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.5,
+      "position": [
+        2060,
+        1820
+      ],
+      "id": "13e884ca-66ee-4e0f-9930-2b9de780787e",
+      "name": "Get-reason",
+      "credentials": {
+        "postgres": {
+          "id": "5qCQ74zJJo2uabWQ",
+          "name": "Stalgast_owner"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "Tut mir leid! Das ist kein gerechtfertigter Grund um dieses Produkt zu reklamieren.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        3540,
+        1500
+      ],
+      "id": "71ee9dbd-2c94-4519-a415-8c75a60b89b3",
+      "name": "Respond to Webhook5",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "Perfekt! Ihr Produkt kann reklamiert werden! Genauere Details zum Versand erhalten sie per E-Mail",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        3860,
+        1680
+      ],
+      "id": "54dd25b9-2f35-434f-95a3-8e2df0aefb81",
+      "name": "Respond to Webhook6",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "customer",
+          "mode": "list",
+          "cachedResultName": "customer"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Set-message-and-id').item.json.sessionId }}",
+            "step": 3,
+            "customernumber": "={{ $('Kundennummer-finder').item.json.output }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "step",
+              "displayName": "step",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "product",
+              "displayName": "product",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "numberofproducts",
+              "displayName": "numberofproducts",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "reasonforrefund",
+              "displayName": "reasonforrefund",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "customernumber",
+              "displayName": "customernumber",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        2900,
+        980
+      ],
+      "id": "4056c2dd-cb43-4dda-8022-1e45516d7e91",
+      "name": "Save-kundennummer",
+      "credentials": {
+        "postgres": {
+          "id": "5qCQ74zJJo2uabWQ",
+          "name": "Stalgast_owner"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "Wie lautet ihre Kundennummer? ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        2540,
+        440
+      ],
+      "id": "7454b30d-9fb7-46e0-9bd6-7df00fb25ff2",
+      "name": "Respond to Webhook7"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "Bitte entschuldigen Sie! Geben Sie bitte erneut Ihre Produkt ID ein",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        2560,
+        660
+      ],
+      "id": "76e0a5c6-3be3-4c08-8d42-cb873117e87b",
+      "name": "Respond to Webhook8"
+    },
+    {
+      "parameters": {
+        "type": "SHA3-512",
+        "value": "={{ $json.headers['x-real-ip'] }}{{ $json.headers['user-agent'] }}secretKey"
+      },
+      "type": "n8n-nodes-base.crypto",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        40
+      ],
+      "id": "19a3d1db-fcc4-48d1-b081-54c2f48b3bea",
+      "name": "Create-session-id"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "884cd711-c207-41e8-ae21-1f4d075a8cbd",
+              "name": "chatInput",
+              "value": "={{ $('Webhook').item.json.body.user_time }}",
+              "type": "string"
+            },
+            {
+              "id": "74b0a991-32de-4c0b-aeee-cb7219fa78c3",
+              "name": "sessionId",
+              "value": "={{ $('Create-session-id').first().json.data }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        60,
+        40
+      ],
+      "id": "65a8188a-b4b5-4dbc-934a-e98c1b9bed56",
+      "name": "Set-message-and-id"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Get-user-data').first().json.step }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "number",
+                      "operation": "notExists",
+                      "singleValue": true
+                    },
+                    "id": "94b4af3f-ae97-47a9-ba7e-ac1c7c82f434"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ea6fd6f6-e520-42b8-876c-a0f668371aa0",
+                    "leftValue": "={{ $('Get-user-data').first().json.step }}",
+                    "rightValue": 1,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "adef81e0-46a7-4de0-b111-cb1684e70d4e",
+                    "leftValue": "={{ $('Get-user-data').first().json.step }}",
+                    "rightValue": 2,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "e90329ae-5d36-44c8-a888-e40b83307c89",
+                    "leftValue": "={{ $('Get-user-data').first().json.step }}",
+                    "rightValue": 3,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        520,
+        20
+      ],
+      "id": "d2632622-2930-48cd-bd90-cef1a1e51911",
+      "name": "Step-filter",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Set-message-and-id').item.json.sessionId }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        2040,
+        220
+      ],
+      "id": "3030c10a-6ff0-419f-8507-00008e84d12d",
+      "name": "Chat-memory",
+      "credentials": {
+        "postgres": {
+          "id": "5qCQ74zJJo2uabWQ",
+          "name": "Stalgast_owner"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "529edd39-f871-48d7-8665-de7bb1685171",
+              "leftValue": "={{ /^(PP)\\d{7}$/.test($('Product-finder').first().json.output) }}",
+              "rightValue": "/^(PP)\\d{7}$/.test($('Product-finder').first().json.output)",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2520,
+        0
+      ],
+      "id": "c6b3f4d8-6cd5-4f00-b577-fbe092f05599",
+      "name": "Is-product-id"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e190f279-294c-4d54-ae34-3da15fdbabb0",
+              "name": "title_1",
+              "value": "={{ $('Get-details').all()[0] ? $('Get-details').all()[0].json.product : null }}",
+              "type": "string"
+            },
+            {
+              "id": "430a756a-a0f1-4c98-8288-f9769d7e631b",
+              "name": "img_1",
+              "value": "={{ $('Get-details').item.json.imgurl }}",
+              "type": "string"
+            },
+            {
+              "id": "41223a69-040d-4044-bcf9-f08b9ea156ae",
+              "name": "garantie_1",
+              "value": "=Garantie: {{ $('Get-details').item.json.guarantee }} Jahre",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3620,
+        -120
+      ],
+      "id": "3da46851-2e96-4e48-bcfd-d311a46e701d",
+      "name": "Set-response",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "9eda7523-12e3-48ba-8166-81ff16432cb7",
+              "leftValue": "={{ $('Set-message-and-id').item.json.chatInput }}",
+              "rightValue": "ja",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1960,
+        540
+      ],
+      "id": "72a16368-6d0b-4bfc-af4a-79c036b3222a",
+      "name": "Is-correct-product"
+    },
+    {
+      "parameters": {
+        "operation": "deleteTable",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "kunde",
+          "mode": "list",
+          "cachedResultName": "kunde"
+        },
+        "deleteCommand": "delete",
+        "where": {
+          "values": [
+            {
+              "column": "id",
+              "value": "={{ $('Set-message-and-id').first().json.sessionId }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        2320,
+        660
+      ],
+      "id": "21a16169-3982-4cc3-a417-4933097f70a1",
+      "name": "Go-back-to-previous-step",
+      "credentials": {
+        "postgres": {
+          "id": "5qCQ74zJJo2uabWQ",
+          "name": "Stalgast_owner"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "customer",
+          "mode": "list",
+          "cachedResultName": "customer"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Set-message-and-id').item.json.sessionId }}",
+            "step": 2
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "step",
+              "displayName": "step",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "product",
+              "displayName": "product",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "numberofproducts",
+              "displayName": "numberofproducts",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "reasonforrefund",
+              "displayName": "reasonforrefund",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "customernumber",
+              "displayName": "customernumber",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        2320,
+        440
+      ],
+      "id": "aabbaf8e-bfef-4fc9-85ac-7c62b7d0754f",
+      "name": "Save-next-step",
+      "credentials": {
+        "postgres": {
+          "id": "5qCQ74zJJo2uabWQ",
+          "name": "Stalgast_owner"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Set-message-and-id').item.json.sessionId }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        2020,
+        1280
+      ],
+      "id": "911c7de0-5a69-4450-8206-da3afaf83d6b",
+      "name": "Chat-memory1",
+      "credentials": {
+        "postgres": {
+          "id": "5qCQ74zJJo2uabWQ",
+          "name": "Stalgast_owner"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Set-message-and-id').item.json.sessionId }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        1920,
+        1820
+      ],
+      "id": "330c8a79-23b4-43f5-a758-eed086d12998",
+      "name": "Chat-memory2",
+      "credentials": {
+        "postgres": {
+          "id": "5qCQ74zJJo2uabWQ",
+          "name": "Stalgast_owner"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "529edd39-f871-48d7-8665-de7bb1685171",
+              "leftValue": "={{ /^\\d{4}$/.test($('Kundennummer-finder').first().json.output) }}",
+              "rightValue": "/^(PP)\\d{7}$/.test($('Product-finder').first().json.output)",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2420,
+        1060
+      ],
+      "id": "3c290205-b423-4025-b15c-ac6bdebefbdf",
+      "name": "Is-customer-id"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Set-message-and-id').item.json.chatInput }}",
+        "options": {
+          "systemMessage": "Du bist ein freundlicher Assistent zum Reklamieren von Produkten bei Stalgast. Deine Einzige Aufgabe ist es zu prüfen ob der Grund für die Stornierung mit dem in der Produkttabelle ungefähr passt. \n\nWenn ja gebe eine 0 zurück \nwenn nein gebe eine 1 zurück\n\nGebe nur die entsprechende Zahl zurück aber niemals ein extra Zeichen oder ein Buchstaben"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        1980,
+        1580
+      ],
+      "id": "6ab6d2f8-b0ca-4ac6-9e90-1c499b2da6b7",
+      "name": "Check-reason-for-refund"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "7d7ddade-c9d1-4e5f-8783-7cfea05ccde4",
+              "leftValue": "={{ $('Check-reason-for-refund').first().json.output }}",
+              "rightValue": "1",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2340,
+        1580
+      ],
+      "id": "7fc094ae-e09e-443a-b72e-94af02fce863",
+      "name": "Is-valid-reason"
+    },
+    {
+      "parameters": {
+        "content": "## Find ProductID",
+        "height": 620,
+        "width": 2520,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1680,
+        -220
+      ],
+      "typeVersion": 1,
+      "id": "c1efcc15-cb14-4bd5-912f-e195ffc2a504",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Validate Product\n",
+        "height": 480,
+        "width": 2520,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1680,
+        380
+      ],
+      "typeVersion": 1,
+      "id": "50618c5f-0ad8-4cbb-9200-1f19f6b44127",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Find CustomerID",
+        "height": 600,
+        "width": 2520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1680,
+        860
+      ],
+      "typeVersion": 1,
+      "id": "060dcdc8-2227-40e6-a7b3-d1cf46f4a640",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## Validate refund reason\n",
+        "height": 600,
+        "width": 2520,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1680,
+        1460
+      ],
+      "typeVersion": 1,
+      "id": "e6de0706-ad24-4bc1-83e3-b49bfc500293",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## Format Input",
+        "height": 2280,
+        "width": 2220,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -540,
+        -220
+      ],
+      "typeVersion": 1,
+      "id": "6303b2b9-b8e3-46f4-b46c-1431fa05a216",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8070ebe9-fdce-42a7-9ac4-b5574689c763",
+              "name": "answer",
+              "value": "=Hallo Sir,\nfolgende Reklamation ist soeben beantragt worden:\n\nKundennummer:{{ $('Get-user-data').first().json.customernumber }} \nProdukt: {{ $('Get-user-data').first().json.product }} \nStatus: Rücksendung wurde beim Lieferdienst beantragt.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2560,
+        1680
+      ],
+      "id": "4b80f11d-a146-4107-88a3-529557b32e38",
+      "name": "Set-Answer"
+    },
+    {
+      "parameters": {
+        "sendTo": "denny.redel@icloud.com",
+        "subject": "=Reklamation von  {{ $('Get-user-data').item.json.product }}",
+        "emailType": "text",
+        "message": "={{ $('Set-Answer').first().json.answer }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        3540,
+        1680
+      ],
+      "id": "6c6d5601-3689-4119-98f2-ce3c1660dfb4",
+      "name": "Send-email",
+      "webhookId": "eb322d08-af75-4764-9ee7-0554eae8c999",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "6Qj045SJjrZ7de3K",
+          "name": "Gmail Levin"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-test-u33729.vm.elestio.app",
+            "x-real-ip": "185.238.219.77",
+            "x-forwarded-for": "185.238.219.77",
+            "x-forwarded-proto": "https",
+            "x-forwarded-port": "443",
+            "connection": "close",
+            "content-length": "20",
+            "sec-ch-ua-platform": "\"macOS\"",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
+            "sec-ch-ua": "\"Chromium\";v=\"134\", \"Not:A-Brand\";v=\"24\", \"Google Chrome\";v=\"134\"",
+            "content-type": "application/json",
+            "sec-ch-ua-mobile": "?0",
+            "accept": "*/*",
+            "origin": "null",
+            "sec-fetch-site": "cross-site",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-dest": "empty",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7",
+            "priority": "u=1, i"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "user_time": "der Heizkörper ist kaputt"
+          },
+          "webhookUrl": "https://n8n-test-u33729.vm.elestio.app/webhook/355d491c-b374-44a3-aada-eb826f44b7a7",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Product-finder",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Product-finder": {
+      "main": [
+        [
+          {
+            "node": "Is-product-id",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Create-session-id",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get-details": {
+      "main": [
+        [
+          {
+            "node": "Save-user-data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Delete Table Products",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Memory": {
+      "main": [
+        [
+          {
+            "node": "Create Table Products",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Table Products": {
+      "main": [
+        [
+          {
+            "node": "Create Table Nutzer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Table Products": {
+      "main": [
+        [
+          {
+            "node": "Delete Memory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook1": {
+      "main": [
+        []
+      ]
+    },
+    "Save-user-data": {
+      "main": [
+        [
+          {
+            "node": "Set-response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get-user-data": {
+      "main": [
+        [
+          {
+            "node": "Step-filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Table Nutzer": {
+      "main": [
+        [
+          {
+            "node": "Create Table orders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Kundennummer-finder": {
+      "main": [
+        [
+          {
+            "node": "Is-customer-id",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Kundennummer-finder",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Table orders": {
+      "main": [
+        [
+          {
+            "node": "Insert Table Products",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert Table Products": {
+      "main": [
+        [
+          {
+            "node": "Insert Tabel orders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get-orders-of-user": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get-product-of-user": {
+      "main": [
+        [
+          {
+            "node": "Get-product-data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get-product-data": {
+      "main": [
+        [
+          {
+            "node": "Get-orders-of-user",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Check-reason-for-refund",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get-reason": {
+      "ai_tool": [
+        [
+          {
+            "node": "Check-reason-for-refund",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save-kundennummer": {
+      "main": [
+        [
+          {
+            "node": "Get-product-of-user",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create-session-id": {
+      "main": [
+        [
+          {
+            "node": "Set-message-and-id",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set-message-and-id": {
+      "main": [
+        [
+          {
+            "node": "Get-user-data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Step-filter": {
+      "main": [
+        [
+          {
+            "node": "Product-finder",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Is-correct-product",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Kundennummer-finder",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Check-reason-for-refund",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat-memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Product-finder",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is-product-id": {
+      "main": [
+        [
+          {
+            "node": "Get-details",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set-response": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is-correct-product": {
+      "main": [
+        [
+          {
+            "node": "Save-next-step",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Go-back-to-previous-step",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Go-back-to-previous-step": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save-next-step": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat-memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "Kundennummer-finder",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat-memory2": {
+      "ai_memory": [
+        [
+          {
+            "node": "Check-reason-for-refund",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is-customer-id": {
+      "main": [
+        [
+          {
+            "node": "Save-kundennummer",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check-reason-for-refund": {
+      "main": [
+        [
+          {
+            "node": "Is-valid-reason",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is-valid-reason": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set-Answer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set-Answer": {
+      "main": [
+        [
+          {
+            "node": "Send-email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send-email": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b6eb5619-0fef-4fed-bf88-971788f658bf",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ed4f3f37220443d82fec76dc79b331975281d2af5e70e3db9bcbd487ec78ae41"
+  },
+  "id": "q7OZAHUFXpTFrjch",
+  "tags": [
+    {
+      "createdAt": "2025-04-16T15:17:18.834Z",
+      "updatedAt": "2025-04-16T15:17:18.834Z",
+      "id": "FiE0KOB9mIP6XbMI",
+      "name": "Prototype"
+    },
+    {
+      "createdAt": "2025-04-16T15:18:30.182Z",
+      "updatedAt": "2025-04-16T15:18:30.182Z",
+      "id": "VQi3KEBBWBtOSeq1",
+      "name": "Shipping"
+    }
+  ]
+}

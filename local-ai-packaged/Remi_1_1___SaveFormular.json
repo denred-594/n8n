@@ -1,0 +1,641 @@
+{
+  "name": "Remi 1.1 - SaveFormular",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "formular"
+            },
+            {
+              "name": "id"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -100,
+        260
+      ],
+      "id": "c167df2d-312c-4cbb-b44a-c0ea0fbce0d2",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "mothertable",
+          "mode": "list",
+          "cachedResultName": "mothertable"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Merge').first().json.id }}",
+            "formular": "={{ $('setFormular').first().json.formular }}",
+            "aktuellesfeld": "={{ $('getFirstCollumnOfTable').first().json.column_name }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "formular",
+              "displayName": "formular",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "aktuellesfeld",
+              "displayName": "aktuellesfeld",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "typoffeld",
+              "displayName": "typoffeld",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": true
+            },
+            {
+              "id": "sensitivequestion",
+              "displayName": "sensitivequestion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        3100,
+        240
+      ],
+      "id": "f61c474f-b141-4035-9cb5-67eec3f5b9ec",
+      "name": "Postgres1",
+      "credentials": {
+        "postgres": {
+          "id": "6SqxrvWZi2YWF4Hw",
+          "name": "neondb_owner Remi 1.0"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "formulartable",
+          "mode": "list",
+          "cachedResultName": "formulartable"
+        },
+        "limit": 1,
+        "where": {
+          "values": [
+            {
+              "column": "name",
+              "value": "={{ $('SetFormular').first().json.formular }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        1160,
+        240
+      ],
+      "id": "f2e6d7ae-57fa-4ef7-ac08-0652b309dd82",
+      "name": "Postgres2",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "6SqxrvWZi2YWF4Hw",
+          "name": "neondb_owner Remi 1.0"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.name }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "id": "2ec57fcb-9301-448e-a54f-3707047f7b70"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "1ee2d2d2-3e4b-408f-8e0b-bd1e26b413e0",
+                    "leftValue": "={{ $json.name }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notExists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1440,
+        240
+      ],
+      "id": "fbd5f119-bbdc-4d48-98ed-3bedcc2405d2",
+      "name": "Switch",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('SetFormular').item.json.formular }}",
+        "options": {
+          "systemMessage": "Deine Einzige Aufgabe ist es den UserInput auf einer der Namen von Formularen aus der Formular Tabelle zu mappen. Du musst den entsprechenden Namen aus der Formular Tabelle 1:1 wiedergeben. Gebe auch nur genau diesen Namen zurück ohne Zeichen oder sonst was"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1740,
+        400
+      ],
+      "id": "5df37a67-5ea6-412b-bf2f-dff30648e896",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1740,
+        660
+      ],
+      "id": "a1d4c684-bd8b-4150-b59e-86cdf9d1a517",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "c7rOayprscHnt5na",
+          "name": "OpenAi account Main (Denny)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Dieses Tool wird aufgerufen um alle Formulare zu erhalten aus der Formular Tabelle",
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "formulartable",
+          "mode": "list",
+          "cachedResultName": "formulartable"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.5,
+      "position": [
+        2060,
+        660
+      ],
+      "id": "4175f768-dd73-4977-9f16-beeb0347fc5c",
+      "name": "Formular Agent",
+      "credentials": {
+        "postgres": {
+          "id": "6SqxrvWZi2YWF4Hw",
+          "name": "neondb_owner Remi 1.0"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "25beed25-44f7-4f26-8071-329ea81ccd91",
+              "name": "id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        340,
+        120
+      ],
+      "id": "029cc651-dec1-46fd-b7cf-45eb09c5b542",
+      "name": "setID",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7336967a-45de-4de2-a19d-2f649626eb11",
+              "name": "formular",
+              "value": "={{ ($json.formular || $json.output).toLowerCase() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        340,
+        300
+      ],
+      "id": "a410e769-4730-45de-b3b7-260e16854b93",
+      "name": "SetFormular",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        840,
+        240
+      ],
+      "id": "17c5f916-6a11-45d4-aee6-85a0a6cbf9f6",
+      "name": "Merge",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5a1aff7d-de54-4132-bf4a-71d64e88edd5",
+              "name": "formular",
+              "value": "={{ $('SetFormular').first().json.formular }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2020,
+        240
+      ],
+      "id": "0f77fef0-5fa8-4f99-8bd0-8275cd0d7a89",
+      "name": "setFormular",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT column_name\nFROM information_schema.columns\nWHERE table_name = '{{ $json.formular }}'\nORDER BY ordinal_position\nOFFSET 1\nLIMIT 1;\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        2320,
+        240
+      ],
+      "id": "4c2a955c-bb6d-4076-8c4b-fef570cc39fe",
+      "name": "getFirstCollumnOfTable",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "6SqxrvWZi2YWF4Hw",
+          "name": "neondb_owner Remi 1.0"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT column_name, data_type\nFROM information_schema.columns\nWHERE table_name = '{{ $('setFormular').first().json.formular }}'\n  AND column_name = '{{ $json.column_name }}';\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        2740,
+        240
+      ],
+      "id": "861285f9-a8f4-4d91-8799-7d9e2a1d8503",
+      "name": "Determine DataType of new field",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "6SqxrvWZi2YWF4Hw",
+          "name": "neondb_owner Remi 1.0"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ae296094-cd71-4450-8257-82ba1f3bfd3c",
+              "name": "aktuellesFeld",
+              "value": "={{ $('Postgres1').first().json.aktuellesfeld }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3320,
+        240
+      ],
+      "id": "741cad99-6113-45cc-bc30-78ede5333a2f",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "formular": "baugenehmigung",
+          "id": "70bb25d1ebe56a85cb4d4d4e40f6aa337143c1fe3e078b2d3f47a6cc296c283f5107d41d0bfb3d550e30c002c6d808e31f037feb19c384c313a2edb391ff9b74"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "setID",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "SetFormular",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres2": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "setFormular",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "SetFormular",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formular Agent": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "setID": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SetFormular": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Postgres2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "setFormular": {
+      "main": [
+        [
+          {
+            "node": "getFirstCollumnOfTable",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "getFirstCollumnOfTable": {
+      "main": [
+        [
+          {
+            "node": "Determine DataType of new field",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Determine DataType of new field": {
+      "main": [
+        [
+          {
+            "node": "Postgres1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1587019d-ba6a-415c-9d76-00fcdf00d277",
+  "meta": {
+    "instanceId": "ed4f3f37220443d82fec76dc79b331975281d2af5e70e3db9bcbd487ec78ae41"
+  },
+  "id": "sYlyaoDDlvjfqOHH",
+  "tags": [
+    {
+      "createdAt": "2025-04-16T15:18:03.721Z",
+      "updatedAt": "2025-04-16T15:18:33.399Z",
+      "id": "hAZFpoylzRVpV5mT",
+      "name": "Commune"
+    },
+    {
+      "createdAt": "2025-04-16T15:21:13.120Z",
+      "updatedAt": "2025-04-16T15:21:13.120Z",
+      "id": "zUivaJiv72U6Dwx4",
+      "name": "Sub-Flow"
+    }
+  ]
+}

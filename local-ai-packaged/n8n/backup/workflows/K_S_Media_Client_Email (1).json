@@ -1,0 +1,356 @@
+{
+  "name": "K&S-Media-Client-Email",
+  "nodes": [
+    {
+      "parameters": {
+        "postProcessAction": "nothing",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailReadImap",
+      "typeVersion": 2,
+      "position": [
+        60,
+        40
+      ],
+      "id": "2da0d244-ab0a-4109-b878-210b2c00d290",
+      "name": "Email Trigger (IMAP)",
+      "credentials": {
+        "imap": {
+          "id": "NFgz8PBRJPaOWGZR",
+          "name": "K&S-Media-Sales"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "eb752de6-4372-4ae6-a805-03f415a50589",
+              "leftValue": "={{ $json.metadata['x-envelope-from'] }}",
+              "rightValue": "<denny.redel@icloud.com>",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "0693e245-e902-495c-b9fe-a405bc2162ea",
+              "leftValue": "={{ $json.subject }}",
+              "rightValue": "ding ding",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        280,
+        40
+      ],
+      "id": "c1db13e9-b250-43fd-bb25-c9e7d53d2f15",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "resource": "pdf",
+        "pdfTemplateId": "75a77b239cad4f8a",
+        "jsonParameters": true,
+        "download": true,
+        "propertiesJson": "={\n    \"name\": \"{{ $('Edit Fields').first().json.name }}\",\n    \"nachname\" : \"{{ $('Edit Fields').first().json.nachname }}\",\n    \"anrede\": \"{{ $('Edit Fields').first().json.anrede }}\",\n    \"adresse\": \"{{ $('Edit Fields').first().json.straße }}\",\n    \"stadt\": \"{{ $('Edit Fields').first().json.stadt }}\",\n    \"firma\": \"{{ $('Edit Fields').first().json.firma }}\",\n    \"datum\": \"{{ $('Edit Fields').first().json.datum }}\",\n    \"gueltigbisdatum\" : \"{{ $('Edit Fields').first().json.gültigbisdatum }}\"\n}",
+        "options": {
+          "fileName": "Angebot pCon"
+        }
+      },
+      "type": "n8n-nodes-base.apiTemplateIo",
+      "typeVersion": 1,
+      "position": [
+        1840,
+        20
+      ],
+      "id": "9a33844f-8be5-464c-b872-c631df78a077",
+      "name": "APITemplate.io",
+      "credentials": {
+        "apiTemplateIoApi": {
+          "id": "Jq6q1LECJ2pmyQJa",
+          "name": "APITemplate.io account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "sales@einrichtungenplanen.de",
+        "toEmail": "=denny.redel@icloud.com",
+        "subject": "Angebot pCon.planner",
+        "emailFormat": "text",
+        "text": "=Hallo Herr / Frau Redel,\n\n \nvielen Dank für Ihr Interesse an pCon.planner.\n\nBeiliegend sende ich Ihnen unser Angebot. (siehe Anhang)\n\n \n\nDamit wir Ihnen die Lizenz/Lizenzen ausliefern können, benötigen wir Ihre Kundennummer.\n\nBitte registrieren sie sich dazu hier: Übersicht - pCon.login\n\n______________________________________________________________________________________________________________________________\n\nEine Videoanleitung dazu finden Sie hier: pCon.login Account erstellen und Herstellerdaten anfragen | pCon Tutorial\n\n \n\n \n\nDas Programm können Sie hier kostenlos herunterladen: https://downloads.pcon-solutions.com/pCon/planner/8.11/pCon.planner_Pro_setup.exe\nDazu ergänzend das pCon. Update: https://downloads.pcon-solutions.com/pCon/planner/8.11/p-pl-x_8.11u1_pro_P-UP.zip\n______________________________________________________________________________________________________________________________\n\nEine Videoanleitung dazu finden Sie hier:\npCon.update DataClient Herunterladen und OFML-Herstellerdaten im pCon.planner Installieren\n\n \n\nDamit Sie schnell in das Programm finden, empfehle ich Ihnen unsere Webinar Veranstaltung „pCon.planner Basis-Aufbauschulung“.\n\nHier lernen Sie in 1,5 Tage für nur 380 € pro Person, wie Sie mit dem Programm richtig arbeiten.\n\n \n\nBei weiteren Fragen bin ich jederzeit für Sie erreichbar.\n\n \n\nViele Grüße\n\nNiklas Wille\n\nCSO / Consulting\n\n \n\nK&S Media Büro Pforzheim\n\nDurlacher Str. 1\n\n75172 Pforzheim │ Germany\n\n \n\nK&S Media GmbH\n\nBürstädter Straße 9  \n\n68623 Lampertheim │ Germany                                       \n\n                                                     \n\nMobil: +49 (0) 176 2146 2491\n\nE-Mail: nw@einrichtungenplanen.de\n\nWebseite: www.einrichtungenplanen.de           LinkedIn: NiklasWille\n\n \n\n\nSie erhalten nachfolgend das\nunverbindliche Angebot für unsere Software und Consulting Leistungen.\n\n\nViele Grüße\n\nNiklas Wille\n\nConsulting & Geschäftsführer\n \n\nK&S Media Büro Pforzheim (bei CMP Consilius UG)\n\nDurlacher Str. 1\n\n75172 Pforzheim │ Germany\n\n \n\nK&S Media GmbH\n\nBürstädter Straße 9  \n\n68623 Lampertheim │ Germany                                       \n\n                                                     \n\nMobil: +49 (0) 176 2146 2491\n\nTel.: +49 (0) 7231 397 8395\n\nFax: +49 (0) 7222 9814 988 \n\n\n\n",
+        "options": {
+          "appendAttribution": false,
+          "attachments": "data"
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        2120,
+        20
+      ],
+      "id": "e1762d5e-2422-4b1d-a197-a1fadd28a052",
+      "name": "Send Email",
+      "webhookId": "38e9962e-da17-4f64-a3a4-cc386dd91e2e",
+      "credentials": {
+        "smtp": {
+          "id": "0aZYKARFbsv2ggyW",
+          "name": "SMTP account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5665c34c-7d98-4435-970d-de853c66000f",
+              "name": "name",
+              "value": "={{ $('Code1').first().json.ganzername }}",
+              "type": "string"
+            },
+            {
+              "id": "b735efa1-e49f-4be0-86b7-f1516699fd51",
+              "name": "nachname",
+              "value": "={{ $('Code1').first().json.nachname }}",
+              "type": "string"
+            },
+            {
+              "id": "3cd0ded2-3adf-4e83-85e6-d6552d6d4657",
+              "name": "firma",
+              "value": "={{ $('Code1').first().json.firma }}",
+              "type": "string"
+            },
+            {
+              "id": "a3f40b86-297e-4495-b1de-00122f63f122",
+              "name": "email",
+              "value": "={{ $('If').first().json.metadata['x-envelope-from'] }}",
+              "type": "string"
+            },
+            {
+              "id": "66a30540-ce54-4b5b-a7d6-7d6053baba3c",
+              "name": "straße",
+              "value": "={{ $('Code1').first().json['straße'] }}",
+              "type": "string"
+            },
+            {
+              "id": "de20cbd0-889e-42d1-948e-96426f2c3d2b",
+              "name": "stadt",
+              "value": "={{ $('Code1').first().json.stadt }}",
+              "type": "string"
+            },
+            {
+              "id": "73b00289-4aab-4b1a-85e1-a98bc3fb8d16",
+              "name": "anrede",
+              "value": "={{ $('Code1').first().json.Anrede }}",
+              "type": "string"
+            },
+            {
+              "id": "51476aad-ec78-411c-af95-880a31fe2852",
+              "name": "datum",
+              "value": "={{ $now.toFormat(\"dd.MM.yyyy\") }}",
+              "type": "string"
+            },
+            {
+              "id": "5b3afb24-a565-41d9-9d10-7635475401ec",
+              "name": "gültigbisdatum",
+              "value": "={{ $now.plus({ days: 14 }).toFormat(\"dd.MM.yyyy\") }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1440,
+        20
+      ],
+      "id": "64099916-8f37-4e2f-9ddc-e6d8be1f1494",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Email Trigger (IMAP)').first().json.textPlain }}",
+        "options": {
+          "systemMessage": "🎯 Optimierter Prompt für sauberen JSON-Output:\n\nExtrahiere aus dem folgenden Text die folgenden personenbezogenen Informationen:\nganzername (Vor- und Nachname der Person)\nnachname (nur der Nachname)\nstraße (falls vorhanden)\nstadt (falls vorhanden)\nfirma (Unternehmen oder Organisation, in der die Person arbeitet)\nrolle (Position oder Funktion im Unternehmen)\nGeneriere eine Anrede also entweder Herrn oder Frau nur eins von beiden\nWenn eine Angabe nicht vorhanden ist, gib für dieses Feld einen leeren String (\"\") zurück.\nGib ausschließlich ein gültiges JSON-Objekt zurück, ohne Einleitung, Kommentare oder Formatierungszeichen.\nBeispiel:\n{\n  \"ganzername\": \"Max Mustermann\",\n  \"nachname\": \"Mustermann\",\n  \"straße\": \"Musterstraße 1\",\n  \"stadt\": \"Musterstadt\",\n  \"firma\": \"Muster AG\",\n  \"rolle\": \"Vertriebsleiter\",\n  \"Anrede\": \"Herrn\"\n}\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        740,
+        20
+      ],
+      "id": "7b41d243-da7b-46cc-9b10-046b40f4fbc8",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {
+          "responseFormat": "json_object"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        780,
+        240
+      ],
+      "id": "8f9e8add-af97-48e8-bba9-3ca1bc343f2d",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "c7rOayprscHnt5na",
+          "name": "OpenAi account Main (Denny)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const rawOutput = $('AI Agent1').first().json.output;\n\nlet parsed;\ntry {\n  parsed = JSON.parse(rawOutput);\n} catch (error) {\n  throw new Error('Fehler beim Parsen von JSON: ' + error.message);\n}\n\nreturn [\n  {\n    json: parsed\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1140,
+        20
+      ],
+      "id": "84aafe92-efe2-4b97-b1f9-f2606dbfadc4",
+      "name": "Code1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Email Trigger (IMAP)": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "APITemplate.io": {
+      "main": [
+        []
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "APITemplate.io",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Berlin",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "42cc95ce-1bab-46a3-9192-a9a79f0ccc51",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ed4f3f37220443d82fec76dc79b331975281d2af5e70e3db9bcbd487ec78ae41"
+  },
+  "id": "6RT1dg81CiMMSlCn",
+  "tags": [
+    {
+      "createdAt": "2025-04-16T15:17:07.547Z",
+      "updatedAt": "2025-04-16T15:17:07.547Z",
+      "id": "tPzsjSF0YNhngg2v",
+      "name": "Testing"
+    },
+    {
+      "createdAt": "2025-04-16T15:26:40.409Z",
+      "updatedAt": "2025-04-16T15:26:40.409Z",
+      "id": "xMJG5qRMeeuaV91k",
+      "name": "Niklas"
+    },
+    {
+      "createdAt": "2025-04-22T19:50:23.819Z",
+      "updatedAt": "2025-04-22T19:50:23.819Z",
+      "id": "1abeI4GcY43z2bnA",
+      "name": "K&S-Media"
+    }
+  ]
+}

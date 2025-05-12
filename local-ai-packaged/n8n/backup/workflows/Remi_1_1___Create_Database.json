@@ -1,0 +1,475 @@
+{
+  "name": "Remi 1.1 - Create Database",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "DROP TABLE IF EXISTS gewerbeanmeldung;\nCREATE TABLE gewerbeanmeldung (\n    id TEXT PRIMARY KEY,\n    rechtsform TEXT,\n    Handelsregister TEXT,\n    geschaeftsName TEXT,\n    familienName TEXT,\n    vorname TEXT,\n    Geschlecht TEXT,\n    Geburtsname TEXT,\n    Geburtsdatum TEXT,\n    GeburtsOrtUndLand TEXT,\n    AnschriftWohnung TEXT,\n    WohnungTel TEXT,\n    WohnungFAx TEXT,\n    WohnungMail TEXT,\n    WohnungInternet TEXT,\n    ZahlGesellschaftler TEXT,\n    ZahlGesetzVertreter TEXT,\n    BeteiligungOefentHand TEXT,\n    VertrBerePerson TEXT,\n    Betriebsstaette TEXT,\n    BetriebsstaetteTel TEXT,\n    BetriebsstaetteFAx TEXT,\n    BetriebsstaetteMail TEXT,\n    BetriebsstaetteInternet TEXT,\n    Hauptniederlassung TEXT,\n    HauptniederlassungTel TEXT,\n    HauptniederlassungFAx TEXT,\n    HauptniederlassungMail TEXT,\n    HauptniederlassungInternet TEXT,\n    FrühereBetriebsstaette TEXT,\n    FrühereBetriebsstaetteTel TEXT,\n    FrühereBetriebsstaetteFAx TEXT,\n    FrühereBetriebsstaetteMail TEXT,\n    FrühereBetriebsstaetteInternet TEXT,\n    BeschreibungTaetigkeit TEXT,\n    Nebengewerbe TEXT,\n    DatumBeginTaetigkeit TEXT,\n    ArtBetrieb TEXT,\n    ZahlGeschFührPersonVoll TEXT,\n    ZahlGeschFührPersonTeil TEXT, \n    AnmErstFür TEXT,\n    GrundNeueinÜbern TEXT,\n    NameFrühGewerb TEXT,\n    BishGesetUnfallversich TEXT,\n    BishMitglNum TEXT,\n    Erlaubnis TEXT,\n    Handwerkskarte TEXT,\n    Aufenthaltstitel TEXT,\n    EntAufTitelAuflBesch TEXT,\n    Datum TEXT,\n    Unterschrift TEXT\n);\n\n-- Beschreibung der Spalten hinzufügen\nCOMMENT ON COLUMN Gewerbeanmeldung.id IS 'Eindeutige ID der Gewerbeanmeldung';\nCOMMENT ON COLUMN Gewerbeanmeldung.rechtsform IS 'Rechtsform des Unternehmens (z. B. GmbH, Einzelunternehmen)';\nCOMMENT ON COLUMN Gewerbeanmeldung.Handelsregister IS 'Handelsregistereintrag, falls vorhanden';\nCOMMENT ON COLUMN Gewerbeanmeldung.geschaeftsName IS 'Offizieller Name des Gewerbes';\nCOMMENT ON COLUMN Gewerbeanmeldung.familienName IS 'Familienname des Antragstellers';\nCOMMENT ON COLUMN Gewerbeanmeldung.vorname IS 'Vorname des Antragstellers';\nCOMMENT ON COLUMN Gewerbeanmeldung.Geschlecht IS 'Geschlecht des Antragstellers';\nCOMMENT ON COLUMN Gewerbeanmeldung.Geburtsname IS 'Geburtsname des Antragstellers';\nCOMMENT ON COLUMN Gewerbeanmeldung.Geburtsdatum IS 'Geburtsdatum des Antragstellers';\nCOMMENT ON COLUMN Gewerbeanmeldung.GeburtsOrtUndLand IS 'Geburtsort und Geburtsland des Antragstellers';\nCOMMENT ON COLUMN Gewerbeanmeldung.AnschriftWohnung IS 'Anschrift der privaten Wohnung des Antragstellers';\nCOMMENT ON COLUMN Gewerbeanmeldung.WohnungTel IS 'Telefonnummer der privaten Wohnung';\nCOMMENT ON COLUMN Gewerbeanmeldung.WohnungFAx IS 'Faxnummer der privaten Wohnung';\nCOMMENT ON COLUMN Gewerbeanmeldung.WohnungMail IS 'E-Mail-Adresse der privaten Wohnung';\nCOMMENT ON COLUMN Gewerbeanmeldung.WohnungInternet IS 'Webseite der privaten Wohnung (falls vorhanden)';\nCOMMENT ON COLUMN Gewerbeanmeldung.ZahlGesellschaftler IS 'Anzahl der Gesellschafter im Unternehmen';\nCOMMENT ON COLUMN Gewerbeanmeldung.ZahlGesetzVertreter IS 'Anzahl der gesetzlichen Vertreter im Unternehmen';\nCOMMENT ON COLUMN Gewerbeanmeldung.BeteiligungOefentHand IS 'Beteiligung der öffentlichen Hand am Unternehmen';\nCOMMENT ON COLUMN Gewerbeanmeldung.VertrBerePerson IS 'Name der vertretungsberechtigten Person';\nCOMMENT ON COLUMN Gewerbeanmeldung.Betriebsstaette IS 'Adresse der Betriebsstätte';\nCOMMENT ON COLUMN Gewerbeanmeldung.BetriebsstaetteTel IS 'Telefonnummer der Betriebsstätte';\nCOMMENT ON COLUMN Gewerbeanmeldung.BetriebsstaetteFAx IS 'Faxnummer der Betriebsstätte';\nCOMMENT ON COLUMN Gewerbeanmeldung.BetriebsstaetteMail IS 'E-Mail-Adresse der Betriebsstätte';\nCOMMENT ON COLUMN Gewerbeanmeldung.BetriebsstaetteInternet IS 'Webseite der Betriebsstätte';\nCOMMENT ON COLUMN Gewerbeanmeldung.Hauptniederlassung IS 'Adresse der Hauptniederlassung';\nCOMMENT ON COLUMN Gewerbeanmeldung.HauptniederlassungTel IS 'Telefonnummer der Hauptniederlassung';\nCOMMENT ON COLUMN Gewerbeanmeldung.HauptniederlassungFAx IS 'Faxnummer der Hauptniederlassung';\nCOMMENT ON COLUMN Gewerbeanmeldung.HauptniederlassungMail IS 'E-Mail-Adresse der Hauptniederlassung';\nCOMMENT ON COLUMN Gewerbeanmeldung.HauptniederlassungInternet IS 'Webseite der Hauptniederlassung';\nCOMMENT ON COLUMN Gewerbeanmeldung.FrühereBetriebsstaette IS 'Adresse der früheren Betriebsstätte (falls vorhanden)';\nCOMMENT ON COLUMN Gewerbeanmeldung.FrühereBetriebsstaetteTel IS 'Telefonnummer der früheren Betriebsstätte';\nCOMMENT ON COLUMN Gewerbeanmeldung.FrühereBetriebsstaetteFAx IS 'Faxnummer der früheren Betriebsstätte';\nCOMMENT ON COLUMN Gewerbeanmeldung.FrühereBetriebsstaetteMail IS 'E-Mail-Adresse der früheren Betriebsstätte';\nCOMMENT ON COLUMN Gewerbeanmeldung.FrühereBetriebsstaetteInternet IS 'Webseite der früheren Betriebsstätte';\nCOMMENT ON COLUMN Gewerbeanmeldung.BeschreibungTaetigkeit IS 'Beschreibung der ausgeübten gewerblichen Tätigkeit';\nCOMMENT ON COLUMN Gewerbeanmeldung.Nebengewerbe IS 'Gibt an, ob es sich um ein Nebengewerbe handelt (true/false)';\nCOMMENT ON COLUMN Gewerbeanmeldung.DatumBeginTaetigkeit IS 'Datum des Beginns der gewerblichen Tätigkeit';\nCOMMENT ON COLUMN Gewerbeanmeldung.ArtBetrieb IS 'Art des Betriebs (z. B. Einzelhandel, Handwerk)';\nCOMMENT ON COLUMN Gewerbeanmeldung.ZahlGeschFührPersonVoll IS 'Anzahl der vollzeitbeschäftigten Geschäftsführer';\nCOMMENT ON COLUMN Gewerbeanmeldung.ZahlGeschFührPersonTeil IS 'Anzahl der teilzeitbeschäftigten Geschäftsführer';\nCOMMENT ON COLUMN Gewerbeanmeldung.AnmErstFür IS 'Anmeldung erfolgt erstmals für (z. B. natürliche Person, juristische Person)';\nCOMMENT ON COLUMN Gewerbeanmeldung.GrundNeueinÜbern IS 'Grund der Gewerbeanmeldung (Neugründung, Übernahme)';\nCOMMENT ON COLUMN Gewerbeanmeldung.NameFrühGewerb IS 'Frühere Gewerbenamen (falls vorhanden)';\nCOMMENT ON COLUMN Gewerbeanmeldung.BishGesetUnfallversich IS 'Bisherige gesetzliche Unfallversicherung des Unternehmens';\nCOMMENT ON COLUMN Gewerbeanmeldung.BishMitglNum IS 'Bisherige Mitgliedsnummer der Unfallversicherung';\nCOMMENT ON COLUMN Gewerbeanmeldung.Erlaubnis IS 'Gibt an, ob eine Erlaubnis für das Gewerbe erforderlich ist (true/false)';\nCOMMENT ON COLUMN Gewerbeanmeldung.Handwerkskarte IS 'Handwerkskarte, falls erforderlich';\nCOMMENT ON COLUMN Gewerbeanmeldung.Aufenthaltstitel IS 'Aufenthaltstitel für ausländische Antragsteller';\nCOMMENT ON COLUMN Gewerbeanmeldung.EntAufTitelAuflBesch IS 'Auflagen oder Beschränkungen des Aufenthaltstitels';\nCOMMENT ON COLUMN Gewerbeanmeldung.Datum IS 'Datum der Gewerbeanmeldung';\nCOMMENT ON COLUMN Gewerbeanmeldung.Unterschrift IS 'Unterschrift des Antragstellers (digital oder als Verweis auf Dokument)';\n\n-- Allgemeine Beschreibung der Tabelle\nCOMMENT ON TABLE Gewerbeanmeldung IS \n'Diese Tabelle enthält alle relevanten Informationen zur Anmeldung eines Gewerbes, einschließlich Antragsteller-Daten, Betriebsinformationen und Erlaubnispflichten.';\n\nCREATE OR REPLACE FUNCTION get_column_comment(p_table_name TEXT, p_column_name TEXT)\nRETURNS TEXT AS $$\nDECLARE\n    column_comment TEXT;\nBEGIN\n    -- Abruf des Kommentars für die Spalte\n    SELECT col_description(pg_attribute.attrelid, pg_attribute.attnum)\n    INTO column_comment\n    FROM pg_attribute\n    JOIN pg_class ON pg_class.oid = pg_attribute.attrelid\n    WHERE pg_class.relname = p_table_name\n    AND pg_attribute.attname = p_column_name\n    AND pg_attribute.attnum > 0; -- Ausschluss von Systemspalten\n\n    -- Rückgabe des Kommentars oder eine Nachricht, wenn kein Kommentar vorhanden ist\n    IF column_comment IS NOT NULL THEN\n        RETURN column_comment;\n    ELSE\n        RETURN 'Kein Kommentar für diese Spalte gefunden';\n    END IF;\nEND;\n$$ LANGUAGE plpgsql;\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        320,
+        80
+      ],
+      "id": "d4857cae-2073-4c9b-ac18-0dc560b83ccf",
+      "name": "GewerbeAnmeldung",
+      "credentials": {
+        "postgres": {
+          "id": "6SqxrvWZi2YWF4Hw",
+          "name": "neondb_owner Remi 1.0"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "drop table if exists baugenehmigung;\nCREATE TABLE baugenehmigung (\n    id TEXT PRIMARY KEY,\n    absender_familienname TEXT,\n    absender_vorname TEXT,\n    absender_strasse TEXT,\n    absender_plz TEXT,\n    absender_ort TEXT,\n    absender_telefon TEXT,\n    absenderemail TEXT,\n    antragstellerfamilienname TEXT,\n    antragstellervorname TEXT,\n    antragstellergeburtstag TEXT,\n    antragstellerstrasse TEXT,\n    antragsteller_plz TEXT,\n    antragstellerort TEXT,\n    antragstellertelefon TEXT,\n    antragstelleremail TEXT,\n    antragstellerberuf TEXT\n);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        560,
+        80
+      ],
+      "id": "b01ffd96-dd5f-4a0d-b85b-40178637a590",
+      "name": "Baugrundstück",
+      "credentials": {
+        "postgres": {
+          "id": "6SqxrvWZi2YWF4Hw",
+          "name": "neondb_owner Remi 1.0"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Create Databases ",
+        "height": 280,
+        "width": 2460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -20,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "7d838f30-5233-4581-919d-19378d7bf4b2",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "DROP TABLE IF EXISTS mothertable;\nCREATE TABLE mothertable (\n    id TEXT PRIMARY KEY,\n    Formular TEXT,\n    AktuellesFeld TEXT,\n    TypofFeld TEXT,\n    sensitiveQuestion BOOLEAN,\n    finished BOOLEAN\n);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        1060,
+        80
+      ],
+      "id": "1657df9e-503a-416a-b493-03bf99206365",
+      "name": "MotherTable",
+      "credentials": {
+        "postgres": {
+          "id": "6SqxrvWZi2YWF4Hw",
+          "name": "neondb_owner Remi 1.0"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "DROP TABLE IF EXISTS formulartable;\nCREATE TABLE formulartable (\n    Name TEXT PRIMARY KEY,\n    Beschreibung TEXT\n);\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        1340,
+        80
+      ],
+      "id": "63fb4b18-222d-42f8-b68f-da173ad6586e",
+      "name": "FormularTable",
+      "credentials": {
+        "postgres": {
+          "id": "6SqxrvWZi2YWF4Hw",
+          "name": "neondb_owner Remi 1.0"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "DROP TABLE IF EXISTS fielddescription;\nCREATE TABLE fielddescription (\n    name TEXT PRIMARY KEY,\n    beschreibung TEXT\n);\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        1620,
+        80
+      ],
+      "id": "c54a3e34-0689-43b7-a8dc-93a3106c9624",
+      "name": "field description",
+      "credentials": {
+        "postgres": {
+          "id": "6SqxrvWZi2YWF4Hw",
+          "name": "neondb_owner Remi 1.0"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "DROP TABLE IF EXISTS sensetivedata;\nCREATE TABLE sensetivedata (\n    name TEXT PRIMARY KEY\n)\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        1920,
+        80
+      ],
+      "id": "cb0db4c4-d3ab-49e7-a75e-aed670ed1a10",
+      "name": "sensetiveData",
+      "credentials": {
+        "postgres": {
+          "id": "6SqxrvWZi2YWF4Hw",
+          "name": "neondb_owner Remi 1.0"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO sensetiveData (name)\nVALUES \n    ('absender_straße'),\n    ('absender_plz'),\n    ('absender_ort'),\n    ('absender_telefon'),\n    ('absender_email'),\n    ('antragsteller_familienname'),\n    ('antragsteller_vorname'),\n    ('antragsteller_geburtstag'),\n    ('antragsteller_straße'),\n    ('antragsteller_plz'),\n    ('antragsteller_ort'),\n    ('antragsteller_telefon'),\n    ('antragsteller_email');\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        80,
+        360
+      ],
+      "id": "354e1951-3b35-4093-966a-9c953217e428",
+      "name": "insert into Sensetivedata",
+      "credentials": {
+        "postgres": {
+          "id": "6SqxrvWZi2YWF4Hw",
+          "name": "neondb_owner Remi 1.0"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        80,
+        80
+      ],
+      "id": "d1c602be-4c16-42a6-9702-8be4fc3fe2b0",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "DO $$ \nDECLARE \n  stmt text;\nBEGIN\n  -- Übertrage Eigentum aller verbleibenden Objekte an postgres\n  FOR stmt IN (\n    SELECT 'ALTER ' || \n           CASE WHEN c.relkind = 'r' THEN 'TABLE' \n                WHEN c.relkind = 'S' THEN 'SEQUENCE' \n                WHEN c.relkind = 'v' THEN 'VIEW' \n                WHEN c.relkind = 'm' THEN 'MATERIALIZED VIEW' \n                WHEN c.relkind = 'f' THEN 'FOREIGN TABLE'\n                WHEN c.relkind = 'p' THEN 'TABLE' \n           END || ' ' || quote_ident(nspname) || '.' || quote_ident(relname) || ' OWNER TO postgres;'\n    FROM pg_class c\n    JOIN pg_namespace n ON n.oid = c.relnamespace\n    WHERE c.relowner = (SELECT oid FROM pg_roles WHERE rolname = 'Remi1.0worker')\n  ) LOOP\n    EXECUTE stmt;\n  END LOOP;\n\n  -- Entferne die Rolle aus allen Gruppen\n  FOR stmt IN (\n    SELECT 'REVOKE ' || quote_ident(r.rolname) || ' FROM \"Remi1.0worker\";'\n    FROM pg_roles r\n    JOIN pg_auth_members m ON r.oid = m.roleid\n    WHERE m.member = (SELECT oid FROM pg_roles WHERE rolname = 'Remi1.0worker')\n  ) LOOP\n    EXECUTE stmt;\n  END LOOP;\n\n  -- Falls immer noch Objekte existieren, erzwinge deren Löschung\n  FOR stmt IN (\n    SELECT 'DROP OWNED BY \"Remi1.0worker\" CASCADE;'\n  ) LOOP\n    EXECUTE stmt;\n  END LOOP;\n\n  -- Jetzt die Rolle endgültig löschen\n  EXECUTE 'DROP ROLE IF EXISTS \"Remi1.0worker\";';\n\nEND $$;\nCREATE ROLE \"Remi1.0worker\" \nWITH \n  LOGIN \n  PASSWORD 'sicherespasswort';\n\nGRANT CONNECT ON DATABASE \"postgres\" TO \"Remi1.0worker\";\nGRANT USAGE ON SCHEMA public TO \"Remi1.0worker\";\nGRANT SELECT, UPDATE, INSERT, DELETE ON ALL TABLES IN SCHEMA public TO \"Remi1.0worker\";\nGRANT SELECT ON information_schema.columns TO \"Remi1.0worker\";\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        80,
+        660
+      ],
+      "id": "37fc77f7-5863-42e0-ac9f-f8e0dd0e7eb1",
+      "name": "create Worker user",
+      "credentials": {
+        "postgres": {
+          "id": "6SqxrvWZi2YWF4Hw",
+          "name": "neondb_owner Remi 1.0"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "DROP TABLE IF EXISTS schulbetreuung;\nCREATE TABLE schulbetreuung (\n    id TEXT PRIMARY KEY,\n    KindVorname TEXT,\n    KindNachname TEXT,\n    KindGeburtstag DATE,\n    KindKlasse TEXT,\n    BetreuungAb DATE,\n    BetreuungMontag TEXT,\n    BetreuungDienstag TEXT,\n    BetreuungMittwoch TEXT,\n    BetreuungDonnerstag TEXT,\n    BetreuungFreitag TEXT\n);\n\n-- Beschreibungen für die Spalten hinzufügen\nCOMMENT ON COLUMN SchulBetreuung.id IS 'Eindeutige ID der Anmeldung für die Schulkindbetreuung';\nCOMMENT ON COLUMN SchulBetreuung.KindVorname IS 'Vorname des Kindes, das betreut werden soll';\nCOMMENT ON COLUMN SchulBetreuung.KindNachname IS 'Nachname des Kindes, das betreut werden soll';\nCOMMENT ON COLUMN SchulBetreuung.KindGeburtstag IS 'Geburtsdatum des Kindes';\nCOMMENT ON COLUMN SchulBetreuung.KindKlasse IS 'Aktuelle Klassenstufe des Kindes';\nCOMMENT ON COLUMN SchulBetreuung.BetreuungAb IS 'Datum, ab dem die Betreuung starten soll';\nCOMMENT ON COLUMN SchulBetreuung.BetreuungMontag IS 'Gebuchte Betreuungszeiten für Montag (Modul 1, 2, 3, Mittagessen)';\nCOMMENT ON COLUMN SchulBetreuung.BetreuungDienstag IS 'Gebuchte Betreuungszeiten für Dienstag (Modul 1, 2, 3, Mittagessen)';\nCOMMENT ON COLUMN SchulBetreuung.BetreuungMittwoch IS 'Gebuchte Betreuungszeiten für Mittwoch (Modul 1, 2, 3, Mittagessen)';\nCOMMENT ON COLUMN SchulBetreuung.BetreuungDonnerstag IS 'Gebuchte Betreuungszeiten für Donnerstag (Modul 1, 2, 3, Mittagessen)';\nCOMMENT ON COLUMN SchulBetreuung.BetreuungFreitag IS 'Gebuchte Betreuungszeiten für Freitag (Modul 1, 2, 3, Mittagessen)';\n\n-- Hinweise zur Modulstruktur:\nCOMMENT ON TABLE SchulBetreuung IS \n'Modul 1: Mo.–Fr. 07:00-08:30 & 11:10-13:00 | \nModul 2: Mo.–Fr. 07:00-08:30 & 11:10-15:00 | \nModul 3: Mo.–Do. 07:00-08:30 & 11:10-17:00, Fr. bis 16:00 | \nBei Modul 2 & 3 ist Mittagessen verpflichtend.';\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        800,
+        80
+      ],
+      "id": "97cdc375-849b-43ca-9ea4-1bc3d2706be1",
+      "name": "Schulbetreuung",
+      "credentials": {
+        "postgres": {
+          "id": "6SqxrvWZi2YWF4Hw",
+          "name": "neondb_owner Remi 1.0"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "\n-- Daten einfügen\nINSERT INTO FormularTable (Name, Beschreibung) VALUES\n    ('gewerbeanmeldung', 'Formular zur Anmeldung eines Gewerbes'),\n    ('schulbetreuung', 'Formular zur Anmeldung für die Schulbetreuung'),\n    ('baugenehmigung', 'Formular zur Beantragung einer Baugenehmigung');",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        320,
+        360
+      ],
+      "id": "72c1c7ee-4631-4f3c-ad14-82b6845515b4",
+      "name": "Insert into Formulars",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "6SqxrvWZi2YWF4Hw",
+          "name": "neondb_owner Remi 1.0"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Fill Table",
+        "height": 280,
+        "width": 2460,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -20,
+        280
+      ],
+      "typeVersion": 1,
+      "id": "511e537f-87d7-4ee1-842e-34194fdc767b",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Create Users",
+        "height": 280,
+        "width": 2460,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -20,
+        560
+      ],
+      "typeVersion": 1,
+      "id": "a0bf9411-07a0-4bd6-b9a7-df036ba56f46",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "CREATE EXTENSION IF NOT EXISTS pgcrypto;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        320,
+        660
+      ],
+      "id": "46fbd351-794e-4832-8b96-53f93c8c0fa4",
+      "name": "enable pgp-encrypt",
+      "credentials": {
+        "postgres": {
+          "id": "6SqxrvWZi2YWF4Hw",
+          "name": "neondb_owner Remi 1.0"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "DROP TABLE IF EXISTS n8n_chat_histories;\nCREATE TABLE n8n_chat_histories (\n    id SERIAL PRIMARY KEY,\n    session_id VARCHAR(255) NOT NULL,\n    message JSONB NOT NULL\n);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2200,
+        80
+      ],
+      "id": "379d08d5-66a6-4a01-88f0-672359992edb",
+      "name": "n8n-chat-histories",
+      "credentials": {
+        "postgres": {
+          "id": "6SqxrvWZi2YWF4Hw",
+          "name": "neondb_owner Remi 1.0"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "GewerbeAnmeldung": {
+      "main": [
+        [
+          {
+            "node": "Baugrundstück",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Baugrundstück": {
+      "main": [
+        [
+          {
+            "node": "Schulbetreuung",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MotherTable": {
+      "main": [
+        [
+          {
+            "node": "FormularTable",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FormularTable": {
+      "main": [
+        [
+          {
+            "node": "field description",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "field description": {
+      "main": [
+        [
+          {
+            "node": "sensetiveData",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "sensetiveData": {
+      "main": [
+        [
+          {
+            "node": "n8n-chat-histories",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "GewerbeAnmeldung",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "insert into Sensetivedata": {
+      "main": [
+        [
+          {
+            "node": "Insert into Formulars",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schulbetreuung": {
+      "main": [
+        [
+          {
+            "node": "MotherTable",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert into Formulars": {
+      "main": [
+        [
+          {
+            "node": "create Worker user",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "create Worker user": {
+      "main": [
+        [
+          {
+            "node": "enable pgp-encrypt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "n8n-chat-histories": {
+      "main": [
+        [
+          {
+            "node": "insert into Sensetivedata",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f6fec0a6-101a-4abd-87d4-25b9b304a1e2",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ed4f3f37220443d82fec76dc79b331975281d2af5e70e3db9bcbd487ec78ae41"
+  },
+  "id": "EUK32nUcQwy5Mmpi",
+  "tags": [
+    {
+      "createdAt": "2025-04-16T15:18:03.721Z",
+      "updatedAt": "2025-04-16T15:18:33.399Z",
+      "id": "hAZFpoylzRVpV5mT",
+      "name": "Commune"
+    },
+    {
+      "createdAt": "2025-04-16T15:21:13.120Z",
+      "updatedAt": "2025-04-16T15:21:13.120Z",
+      "id": "zUivaJiv72U6Dwx4",
+      "name": "Sub-Flow"
+    }
+  ]
+}

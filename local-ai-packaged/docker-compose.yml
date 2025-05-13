@@ -9,10 +9,12 @@ volumes:
 
 networks:
   demo:
+  local-ai-packaged_demo:
+    external: true  # Verwendet das bestehende Netzwerk aus deinem Log (NETWORK ID 98792672ebe0)
 
 x-n8n: &service-n8n
   image: n8nio/n8n:latest
-  networks: ['demo']
+  networks: ['demo', 'local-ai-packaged_demo']
   environment:
     - DB_TYPE=postgresdb
     - DB_POSTGRESDB_HOST=postgres
@@ -29,7 +31,7 @@ x-n8n: &service-n8n
 services:
   flowise:
     image: flowiseai/flowise
-    networks: ['demo']
+    networks: ['demo', 'local-ai-packaged_demo']
     restart: unless-stopped
     container_name: flowise
     environment:
@@ -49,7 +51,7 @@ services:
 
   open-webui:
     image: ghcr.io/open-webui/open-webui:main
-    networks: ['demo']
+    networks: ['demo', 'local-ai-packaged_demo']
     restart: unless-stopped
     container_name: open-webui
     ports:
@@ -66,7 +68,7 @@ services:
 
   postgres:
     image: postgres:16-alpine
-    networks: ['demo']
+    networks: ['demo', 'local-ai-packaged_demo']
     restart: unless-stopped
     ports:
       - 5432:5432
@@ -115,7 +117,7 @@ services:
       - n8n_storage:/home/node/.n8n
       - ./n8n/backup:/backup
       - ./shared:/data/shared
-      - /root/n8n/local-ai-packaged:/daten  # Hier wird das Verzeichnis gemountet
+      - /root/n8n/local-ai-packaged:/daten
     depends_on:
       postgres:
         condition: service_healthy
@@ -130,12 +132,30 @@ services:
   qdrant:
     image: qdrant/qdrant
     container_name: qdrant
-    networks: ['demo']
+    networks: ['demo', 'local-ai-packaged_demo']
     restart: unless-stopped
     ports:
       - 6333:6333
+      - 6334:6334
     volumes:
       - qdrant_storage:/qdrant/storage
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 1g
+
+  custom-api:
+    build:
+      context: ../custom-api  # Angepasster Pfad, da custom-api in ~/n8n/custom-api liegt
+    container_name: custom-api
+    networks:
+      - local-ai-packaged_demo
+    ports:
+      - "5000:5000"  # Konsistent mit deinem Log (docker run -p 5000:5000)
+    volumes:
+      - ../custom-api:/app  # Verzeichnis-Mapping zum Arbeitsverzeichnis
+    restart: unless-stopped
     deploy:
       resources:
         limits:

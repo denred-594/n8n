@@ -10,7 +10,7 @@ volumes:
 networks:
   demo:
   local-ai-packaged_demo:
-    external: true  # Verwendet das bestehende Netzwerk aus deinem Log (NETWORK ID 98792672ebe0)
+    external: true
 
 x-n8n: &service-n8n
   image: n8nio/n8n:latest
@@ -147,14 +147,14 @@ services:
 
   custom-api:
     build:
-      context: ../custom-api  # Angepasster Pfad, da custom-api in ~/n8n/custom-api liegt
+      context: ../custom-api
     container_name: custom-api
     networks:
       - local-ai-packaged_demo
     ports:
-      - "5000:5000"  # Konsistent mit deinem Log (docker run -p 5000:5000)
+      - "5000:5000"
     volumes:
-      - ../custom-api:/app  # Verzeichnis-Mapping zum Arbeitsverzeichnis
+      - ../custom-api:/app
     restart: unless-stopped
     deploy:
       resources:

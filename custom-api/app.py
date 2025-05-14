@@ -37,7 +37,7 @@ def api_endpoint():
         }
 
         # Template laden
-        template = env.get_template('offer_template.html')
+        template = env.get_template('pCon-planner-angebot.html')
 
         # Template rendern
         rendered_html = template.render(**template_data)

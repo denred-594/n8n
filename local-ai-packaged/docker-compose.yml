@@ -162,14 +162,22 @@ services:
   custom-api:
     build:
       context: ../custom-api
+      dockerfile: Dockerfile
     container_name: custom-api
     networks:
+      - demo
       - local-ai-packaged_demo
     ports:
-      - "5000:5000"
+      - "5001:5001"
     volumes:
       - ../custom-api:/app
     restart: unless-stopped
+    environment:
+      - DB_POSTGRESDB_HOST=postgres
+      - DB_POSTGRESDB_USER=${POSTGRES_USER}
+      - DB_POSTGRESDB_PASSWORD=${POSTGRES_PASSWORD}
+    depends_on:
+      - postgres
     deploy:
       resources:
         limits:

@@ -1,3 +1,5 @@
 flask
-jinja2 
+jinja2
 weasyprint
+pyppeteer
+uvloop

@@ -56,7 +56,7 @@ def api_endpoint():
             return jsonify({"message": "Keine Daten empfangen"}), 400
 
         # Erforderliche Variablen prüfen
-        required_fields = ['name', 'nachname', 'firma', 'email', 'straße', 'stadt', 'anrede', 'datum', 'gültigbisdatum', 'offer_number']
+        required_fields = ['name', 'nachname', 'firma', 'email', 'straße', 'stadt', 'anrede', 'datum', 'gültigbisdatum', 'offer_number', 'greeting']
         missing_fields = [field for field in required_fields if field not in data]
         if missing_fields:
             return jsonify({"message": f"Fehlende Felder: {', '.join(missing_fields)}"}), 400
@@ -72,7 +72,8 @@ def api_endpoint():
             'anrede': str(data['anrede']),
             'datum': str(data['datum']),
             'gueltigbisdatum': str(data['gültigbisdatum']),
-            'offer_number': str(data['offer_number'])
+            'offer_number': str(data['offer_number']),
+	    'greeting': str(data['greeting'])
         }
 
         # Template laden und rendern

@@ -1,0 +1,48 @@
+[33mcommit 4ac4929f91af775f9c7492566b408583ddd255db[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdevelop[m[33m, [m[1;31morigin/develop[m[33m)[m
+Author: denred-594 <denny@redel-aisolutions.com>
+Date:   Sun Jun 1 08:04:12 2025 +0200
+
+    override every other font
+
+[33mcommit fe35009b1e2888748d1b69610a1eaacf66620c63[m
+Author: denred-594 <denny@redel-aisolutions.com>
+Date:   Sun Jun 1 07:57:57 2025 +0200
+
+    changed style blocks to calibri
+
+[33mcommit 5aa16ef48069459a4e364b7d2013b45399125e2b[m
+Author: denred-594 <denny@redel-aisolutions.com>
+Date:   Sun Jun 1 07:46:55 2025 +0200
+
+    linked calibri to html
+
+[33mcommit ce5c53c86adf26aff1ad1685d779240d183c581d[m
+Merge: e6f7cf1 b83d5aa
+Author: denred-594 <denny@redel-aisolutions.com>
+Date:   Sun Jun 1 07:36:18 2025 +0200
+
+    added calibiri as font
+
+[33mcommit e6f7cf1c0c6ea2afdb5e46a653dd3459b16fc7cd[m
+Author: denred-594 <denny@redel-aisolutions.com>
+Date:   Sun Jun 1 07:34:12 2025 +0200
+
+    added calibiri as font
+
+[33mcommit b83d5aa464f3dc0ba33e7d01370e064c9a99a568[m
+Author: denred-594 <denny@redel-aisolutions.com>
+Date:   Sun Jun 1 05:28:43 2025 +0000
+
+    update from server
+
+[33mcommit 40fccfa5bf518077f31e3d29cc91265fdfe408c8[m
+Author: denred-594 <denny@redel-aisolutions.com>
+Date:   Thu May 15 21:29:47 2025 +0200
+
+    added custom api create pdf
+
+[33mcommit 48eef89f526a8b3e410cdb2e00ebcb2ee7583dc0[m
+Author: denred-594 <denny@redel-aisolutions.com>
+Date:   Thu May 15 21:27:31 2025 +0200
+
+    Update docker-compose.yml updated for custom api

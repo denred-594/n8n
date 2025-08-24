@@ -9,6 +9,7 @@ volumes:
 
 networks:
   demo:
+    external: true
   local-ai-packaged_demo:
     external: true
 

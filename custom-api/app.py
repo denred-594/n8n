@@ -10,7 +10,10 @@ uvloop.install()
 app = Flask(__name__)
 
 # Jinja2-Umgebung initialisieren
-env = Environment(loader=FileSystemLoader('templates'))
+env = Environment(loader=FileSystemLoader('templates'),
+    auto_reload=True,  # Add this line to auto-reload templates
+    cache_size=0       # Disable template caching
+)
 
 # Pyppeteer PDF-Erstellung
 async def convert_with_pyppeteer(html, output_path):

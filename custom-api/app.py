@@ -32,9 +32,10 @@ async def convert_with_pyppeteer(html, output_path):
             "width": "210mm",
             "height": "297mm",
             "printBackground": False,
+            "displayHeaderFooter": False,
             "margin": {
-                "top": "10mm",
-                "bottom": "10mm",
+                "top": "0mm",
+                "bottom": "0mm",
                 "left": "10mm",
                 "right": "10mm"
             }

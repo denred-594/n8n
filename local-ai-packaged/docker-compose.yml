@@ -110,12 +110,13 @@ services:
     container_name: n8n
     restart: unless-stopped
     ports:
-      - 5678:5678
+      - 127.0.0.1:5678:5678
     environment:
-      - N8N_HOST=ks-media.redel-aisolutions.com
+      - N8N_HOST=ks-media.heyremi.de
       - N8N_PROTOCOL=https
-      - N8N_PORT=5678
-      - WEBHOOK_URL=https://0b9c-2003-f6-6730-9b00-e0ea-9fe2-c578-9d67.ngrok-free.app
+      - N8N_PORT=443
+      - WEBHOOK_URL=https://ks-media.heyremi.de/
+      - N8N_PROXY_HOPS=1
       - DB_TYPE=postgresdb
       - DB_POSTGRESDB_HOST=postgres
       - DB_POSTGRESDB_USER=${POSTGRES_USER}

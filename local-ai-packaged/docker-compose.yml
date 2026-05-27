@@ -114,7 +114,7 @@ services:
     environment:
       - N8N_HOST=ks-media.heyremi.de
       - N8N_PROTOCOL=https
-      - N8N_PORT=443
+      - N8N_PORT=5678
       - WEBHOOK_URL=https://ks-media.heyremi.de/
       - N8N_PROXY_HOPS=1
       - DB_TYPE=postgresdb

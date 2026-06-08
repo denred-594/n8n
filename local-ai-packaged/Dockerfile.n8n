@@ -2,6 +2,9 @@ FROM python:3.12-alpine AS python
 
 FROM n8nio/n8n:latest
 
+ENV VIRTUAL_ENV=/opt/n8n-python-venv
+ENV PATH="/opt/n8n-python-venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
 USER root
 COPY --from=python /usr/local /usr/local
 RUN python3 --version \
@@ -9,13 +12,12 @@ RUN python3 --version \
     && python3 -m venv --copies /opt/n8n-python-venv \
     && /opt/n8n-python-venv/bin/python --version \
     && /opt/n8n-python-venv/bin/python -c "import sys; print(sys.prefix); print(sys.executable)" \
-    && ln -sf /opt/n8n-python-venv/bin/python3 /usr/local/bin/python3 \
-    && ln -sf /opt/n8n-python-venv/bin/python /usr/local/bin/python \
+    && PATH="/opt/n8n-python-venv/bin:$PATH" python -c "import sys; print(sys.prefix); print(sys.executable)" \
     && python -c "import sys; print(sys.prefix); print(sys.executable)" \
     && (npm uninstall -g pdf-parse || true) \
     && npm install -g pdf-parse@1.1.1 --force \
     && mkdir -p /home/node \
-    && chown -R node:node /home/node
+    && chown -R node:node /home/node /opt/n8n-python-venv
 USER node
 RUN cd /home/node \
     && npm init -y \

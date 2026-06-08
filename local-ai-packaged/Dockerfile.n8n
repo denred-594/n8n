@@ -1,7 +1,8 @@
 FROM n8nio/n8n:latest
 
 USER root
-RUN npm uninstall -g pdf-parse || true \
+RUN apk add --no-cache python3 py3-pip \
+    && npm uninstall -g pdf-parse || true \
     && npm install -g pdf-parse@1.1.1 --force \
     && mkdir -p /home/node \
     && chown -R node:node /home/node

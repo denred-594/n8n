@@ -1,0 +1,9 @@
+FROM n8nio/n8n:latest
+
+USER root
+RUN npm uninstall -g pdf-parse || true \
+    && npm install -g pdf-parse@1.1.1 --force \
+    && cd /usr/local/lib/node_modules/n8n \
+    && npm uninstall pdf-parse || true \
+    && npm install pdf-parse@1.1.1 --force
+USER node

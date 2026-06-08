@@ -11,13 +11,16 @@ networks:
     external: true
 
 x-n8n: &service-n8n
-  image: n8nio/n8n:latest
+  build:
+    context: .
+    dockerfile: Dockerfile.n8n
   networks: ['demo']
   environment:
     - DB_TYPE=postgresdb
     - DB_POSTGRESDB_HOST=postgres
     - DB_POSTGRESDB_USER=${POSTGRES_USER}
     - DB_POSTGRESDB_PASSWORD=${POSTGRES_PASSWORD}
+    - DB_POSTGRESDB_SSL_ENABLED=true
     - N8N_DIAGNOSTICS_ENABLED=false
     - N8N_PERSONALIZATION_ENABLED=false
     - N8N_ENCRYPTION_KEY
@@ -121,6 +124,7 @@ services:
       - DB_POSTGRESDB_HOST=postgres
       - DB_POSTGRESDB_USER=${POSTGRES_USER}
       - DB_POSTGRESDB_PASSWORD=${POSTGRES_PASSWORD}
+      - DB_POSTGRESDB_SSL_ENABLED=true
       - N8N_DIAGNOSTICS_ENABLED=false
       - N8N_PERSONALIZATION_ENABLED=false
       - N8N_ENCRYPTION_KEY

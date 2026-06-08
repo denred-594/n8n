@@ -114,6 +114,10 @@ services:
     <<: *service-n8n
     container_name: n8n
     restart: unless-stopped
+    entrypoint: /bin/sh
+    command:
+      - "-c"
+      - "export PATH=/opt/n8n-python-venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin VIRTUAL_ENV=/opt/n8n-python-venv && exec tini -- /docker-entrypoint.sh"
     ports:
       - 127.0.0.1:5678:5678
     environment:

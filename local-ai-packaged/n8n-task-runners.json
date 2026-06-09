@@ -45,7 +45,11 @@
 				"N8N_SENTRY_DSN",
 				"N8N_VERSION",
 				"ENVIRONMENT",
-				"DEPLOYMENT_NAME"
+				"DEPLOYMENT_NAME",
+				"YTA_PROXY_HTTP_URL",
+				"YTA_PROXY_HTTPS_URL",
+				"YTA_PROXY_USERNAME",
+				"YTA_PROXY_PASSWORD"
 			],
 			"env-overrides": {
 				"PYTHONPATH": "/opt/runners/task-runner-python",

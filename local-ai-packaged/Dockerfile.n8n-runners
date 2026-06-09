@@ -2,4 +2,3 @@ FROM n8nio/runners:latest
 
 USER root
 RUN python3 -m pip install --no-cache-dir youtube-transcript-api
-USER node

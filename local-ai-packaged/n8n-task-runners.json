@@ -56,7 +56,9 @@
 			"env-overrides": {
 				"PYTHONPATH": "/opt/runners/task-runner-python",
 				"N8N_RUNNERS_STDLIB_ALLOW": "os,pathlib,json,math,datetime,re",
-				"N8N_RUNNERS_EXTERNAL_ALLOW": "youtube_transcript_api"
+				"N8N_RUNNERS_EXTERNAL_ALLOW": "youtube_transcript_api",
+				"YTA_PROXY_USERNAME": "lqqvioko",
+				"YTA_PROXY_PASSWORD": "oxrw82ilhx7z"
 			}
 		}
 	]

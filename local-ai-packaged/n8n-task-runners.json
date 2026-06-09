@@ -44,6 +44,7 @@
 				"N8N_RUNNERS_MAX_CONCURRENCY",
 				"N8N_RUNNERS_STDLIB_ALLOW",
 				"N8N_RUNNERS_EXTERNAL_ALLOW",
+				"N8N_BLOCK_RUNNER_ENV_ACCESS",
 				"N8N_SENTRY_DSN",
 				"N8N_VERSION",
 				"ENVIRONMENT",
@@ -57,6 +58,7 @@
 				"PYTHONPATH": "/opt/runners/task-runner-python",
 				"N8N_RUNNERS_STDLIB_ALLOW": "os,pathlib,json,math,datetime,re",
 				"N8N_RUNNERS_EXTERNAL_ALLOW": "youtube_transcript_api",
+				"N8N_BLOCK_RUNNER_ENV_ACCESS": "false",
 				"YTA_PROXY_USERNAME": "lqqvioko",
 				"YTA_PROXY_PASSWORD": "oxrw82ilhx7z"
 			}

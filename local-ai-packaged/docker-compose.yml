@@ -133,6 +133,7 @@ services:
       - N8N_RUNNERS_ENABLED_TASK_TYPES=javascript,python
       - N8N_RUNNERS_N8N_CONCURRENCY=0
       - N8N_BLOCK_ENV_ACCESS_IN_NODE=false
+      - N8N_BLOCK_RUNNER_ENV_ACCESS=false
       - N8N_RUNNERS_STDLIB_ALLOW=os,pathlib,json,math,datetime,re
       - N8N_RUNNERS_EXTERNAL_ALLOW=youtube_transcript_api
       - YTA_PROXY_HTTP_URL=${YTA_PROXY_HTTP_URL:-}
@@ -177,6 +178,7 @@ services:
       - N8N_RUNNERS_ENABLED_TASK_TYPES=javascript,python
       - N8N_RUNNERS_MAX_CONCURRENCY=5
       - N8N_BLOCK_ENV_ACCESS_IN_NODE=false
+      - N8N_BLOCK_RUNNER_ENV_ACCESS=false
       - N8N_RUNNERS_STDLIB_ALLOW=os,pathlib,json,math,datetime,re
       - N8N_RUNNERS_EXTERNAL_ALLOW=youtube_transcript_api
       - PYTHONPATH=/opt/runners/task-runner-python

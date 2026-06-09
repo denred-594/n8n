@@ -132,6 +132,7 @@ services:
       - N8N_RUNNERS_BROKER_LISTEN_ADDRESS=0.0.0.0
       - N8N_RUNNERS_ENABLED_TASK_TYPES=javascript,python
       - N8N_NATIVE_PYTHON_RUNNER=true
+      - N8N_BLOCK_ENV_ACCESS_IN_NODE=false
       - N8N_RUNNERS_STDLIB_ALLOW=os,pathlib,json,math,datetime,re
       - N8N_RUNNERS_EXTERNAL_ALLOW=youtube_transcript_api
       - DB_TYPE=postgresdb
@@ -170,6 +171,7 @@ services:
       - N8N_RUNNERS_TASK_BROKER_URI=http://n8n:5679
       - N8N_RUNNERS_ENABLED_TASK_TYPES=javascript,python
       - N8N_RUNNERS_MAX_CONCURRENCY=5
+      - N8N_BLOCK_ENV_ACCESS_IN_NODE=false
       - N8N_RUNNERS_STDLIB_ALLOW=os,pathlib,json,math,datetime,re
       - N8N_RUNNERS_EXTERNAL_ALLOW=youtube_transcript_api
       - PYTHONPATH=/opt/runners/task-runner-python

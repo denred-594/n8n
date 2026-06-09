@@ -135,6 +135,10 @@ services:
       - N8N_BLOCK_ENV_ACCESS_IN_NODE=false
       - N8N_RUNNERS_STDLIB_ALLOW=os,pathlib,json,math,datetime,re
       - N8N_RUNNERS_EXTERNAL_ALLOW=youtube_transcript_api
+      - YTA_PROXY_HTTP_URL=${YTA_PROXY_HTTP_URL:-}
+      - YTA_PROXY_HTTPS_URL=${YTA_PROXY_HTTPS_URL:-}
+      - YTA_PROXY_USERNAME=${YTA_PROXY_USERNAME:-}
+      - YTA_PROXY_PASSWORD=${YTA_PROXY_PASSWORD:-}
       - DB_TYPE=postgresdb
       - DB_POSTGRESDB_HOST=postgres
       - DB_POSTGRESDB_USER=${POSTGRES_USER}

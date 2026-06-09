@@ -131,7 +131,6 @@ services:
       - N8N_RUNNERS_AUTH_TOKEN=${N8N_RUNNERS_AUTH_TOKEN:-change-me-runner-token}
       - N8N_RUNNERS_BROKER_LISTEN_ADDRESS=0.0.0.0
       - N8N_RUNNERS_ENABLED_TASK_TYPES=javascript,python
-      - N8N_NATIVE_PYTHON_RUNNER=true
       - N8N_BLOCK_ENV_ACCESS_IN_NODE=false
       - N8N_RUNNERS_STDLIB_ALLOW=os,pathlib,json,math,datetime,re
       - N8N_RUNNERS_EXTERNAL_ALLOW=youtube_transcript_api

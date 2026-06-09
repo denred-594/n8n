@@ -169,6 +169,7 @@ services:
     environment:
       - N8N_RUNNERS_AUTH_TOKEN=${N8N_RUNNERS_AUTH_TOKEN:-change-me-runner-token}
       - N8N_RUNNERS_TASK_BROKER_URI=http://n8n:5679
+      - N8N_RUNNERS_CONFIG_PATH=/etc/n8n-task-runners.json
       - N8N_RUNNERS_ENABLED_TASK_TYPES=javascript,python
       - N8N_RUNNERS_MAX_CONCURRENCY=5
       - N8N_BLOCK_ENV_ACCESS_IN_NODE=false

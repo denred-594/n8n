@@ -8,7 +8,6 @@ volumes:
 networks:
   demo:
     name: local-ai-packaged_demo
-    external: true
 
 x-n8n: &service-n8n
   build:
@@ -119,7 +118,7 @@ services:
       - "-c"
       - "export PATH=/opt/n8n-python-venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin VIRTUAL_ENV=/opt/n8n-python-venv && exec tini -- /docker-entrypoint.sh"
     ports:
-      - 127.0.0.1:5678:5678
+      - 5678:5678
     environment:
       - N8N_HOST=ks-media.heyremi.de
       - N8N_PROTOCOL=https
